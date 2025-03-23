@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - TMATS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        .wrapper {
+            transform: scale(1);
+            height: 420px;
+            min-width: 420px;
+        }
+        .form-box {
+            width: 100%;
+            min-width: 380px;
+        }
+        #error-message {
+            color: #ff0000;
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
+        }
+        #success-message {
+            color: #00a300;
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .return-home {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .return-home a {
+            color: #24699d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .return-home a:hover {
+            text-decoration: underline;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 12px;
+            width: 100%;
+        }
+        .btn-secondary {
+            flex: 1;
+            min-width: 140px;
+            height: 50px;
+            background: transparent;
+            border: 3px solid #24699d;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #24699d;
+            font-weight: 500;
+            transition: background 0.3s, color 0.3s, transform 0.2s;
+            padding: 0 15px;
+            line-height: 44px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn-secondary:hover {
+            background: #24699d;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .btn {
+            flex: 1;
+            min-width: 100px;
+            height: 50px;
+            background: transparent;
+            border: 3px solid #24699d;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #24699d;
+            font-weight: 500;
+            transition: background 0.3s, color 0.3s, transform 0.2s;
+            padding: 0 15px;
+            line-height: 44px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn:hover {
+            background: #24699d;
+            color: #fff;
+            transform: translateY(-2px);
+            border-color: #24699d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">TMATS</h2>
+        <nav class="navigation">
+            <a th:href="@{/Home}">Home</a>
+            <a th:href="@{/About}">About</a>
+            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/Contact}">Contact</a>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <div class="form-box login">
+            <h2>Verify Your Account</h2>
+            <p id="error-message"></p>
+            <p id="success-message"></p>
+            
+            <form id="otp-form">
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="key"></ion-icon></span>
+                    <input type="text" id="otp" required placeholder=" ">
+                    <label>Verification Code</label>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="resend-btn" class="btn-secondary">Resend Code</button>
+                    <button type="submit" class="btn">Verify</button>
+                </div>
+            </form>
+            
+            <div class="return-home">
+                <a th:href="@{/Home}">Return to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const errorMsg = document.getElementById('error-message');
+            const successMsg = document.getElementById('success-message');
+            
+            // Handle form submission
+            document.getElementById('otp-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const otp = document.getElementById('otp').value.trim();
+                
+                if (!otp) {
+                    showError('Please enter the verification code');
+                    return;
+                }
+                
+                // Send verification request
+                fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ otp: otp })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showSuccess('Account verified successfully!');
+                        setTimeout(() => {
+                            window.location.href = '/Home';
+                        }, 2000);
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Invalid code');
+                        });
+                    }
+                })
+                .catch(error => {
+                    showError(error.message);
+                });
+            });
+            
+            // Handle resend button
+            document.getElementById('resend-btn').addEventListener('click', function() {
+                if (!email) {
+                    showError('Email address not found');
+                    return;
+                }
+                
+                // Send resend request
+                fetch('/api/auth/resend-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showSuccess('Verification code resent to your email');
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Failed to resend code');
+                        });
+                    }
+                })
+                .catch(error => {
+                    showError(error.message);
+                });
+            });
+            
+            function showError(message) {
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 5000);
+            }
+            
+            function showSuccess(message) {
+                successMsg.textContent = message;
+                successMsg.style.display = 'block';
+                errorMsg.style.display = 'none';
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html> 

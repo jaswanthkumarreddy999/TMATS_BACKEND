@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - TMATS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <script th:inline="javascript">
+        window.onload = function() {
+            console.log("404 page loaded");
+            // Check if user is logged in
+            var isLoggedIn = /*[[${session.user != null}]]*/ false;
+            var role = /*[[${session.role}]]*/ null;
+
+            console.log("Login status:", isLoggedIn);
+            console.log("User role:", role);
+            
+            if (isLoggedIn) {
+                if (role && role.toString() === 'ADMIN') {
+                    console.log("Redirecting to Admin Dashboard");
+                    // If admin is logged in, redirect to admin dashboard
+                    window.location.href = "/Admin/Dashboard";
+                } else {
+                    console.log("Redirecting to User Dashboard");
+                    // If regular user is logged in, redirect to dashboard
+                    window.location.href = "/Dashboard";
+                }
+            } else {
+                console.log("Redirecting to Home");
+                // If not logged in, redirect to home
+                window.location.href = "/Home";
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <h2 class="logo">TMATS</h2>
+        <nav class="navigation">
+            <a th:href="@{/Home}">Home</a>
+            <a th:href="@{/About}">About</a>
+            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/Contact}">Contact</a>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <div class="form-box login">
+            <h2>Page Not Found</h2>
+            <p>The page you are looking for could not be found.</p>
+            <p>Redirecting you...</p>
+        </div>
+    </div>
+</body>
+</html> 

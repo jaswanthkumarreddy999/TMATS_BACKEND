@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Not Verified - TMATS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        .wrapper {
+            transform: scale(1);
+            height: 400px;
+        }
+        .input-box {
+            display: block;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .btn-secondary {
+            width: 48%;
+            height: 45px;
+            background: transparent;
+            border: 2px solid #24699d;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #24699d;
+            font-weight: 500;
+        }
+        .btn-secondary:hover {
+            background: #24699d;
+            color: #fff;
+        }
+        .notice-text {
+            color: #24699d;
+            text-align: center;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">TMATS</h2>
+        <nav class="navigation">
+            <a th:href="@{/Home}">Home</a>
+            <a th:href="@{/About}">About</a>
+            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/Contact}">Contact</a>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <div class="form-box login">
+            <h2>Account Not Verified</h2>
+            <p class="notice-text">Your account has not been verified yet. Please check your email for the verification code or request a new one.</p>
+            
+            <div id="emailField" class="input-box">
+                <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                <input type="email" id="email" required placeholder=" ">
+                <label>Your Email</label>
+            </div>
+            
+            <div class="btn-container">
+                <button id="verify-btn" class="btn">Go to Verification</button>
+                <a th:href="@{/Home}" class="btn-secondary">Return to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const emailInput = document.getElementById('email');
+            const emailField = document.getElementById('emailField');
+            
+            // If email is provided in the URL, hide the input field
+            if (email) {
+                emailInput.value = email;
+                // emailField.style.display = 'none';
+            }
+            
+            // Handle the verification button
+            document.getElementById('verify-btn').addEventListener('click', function() {
+                const userEmail = emailInput.value.trim();
+                
+                if (!userEmail) {
+                    alert('Please enter your email address');
+                    return;
+                }
+                
+                window.location.href = '/verify-otp?email=' + encodeURIComponent(userEmail);
+            });
+        });
+    </script>
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html> 
