@@ -3,14 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TMATS - Home</title>
+    <title>TMATS - Contact</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        .contact-content {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 80px 20px 20px;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            max-height: 700px;
+        }
+        
+        .contact-form-container {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            background: rgba(22, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contact-form-container h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 2px solid #0091ff;
+            padding-bottom: 10px;
+        }
+        
+        .contact-form-container p {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, 
+        .form-group textarea:focus {
+            border-color: #0091ff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-group label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus ~ label,
+        .form-group input:not(:placeholder-shown) ~ label,
+        .form-group textarea:focus ~ label,
+        .form-group textarea:not(:placeholder-shown) ~ label {
+            top: -20px;
+            left: 5px;
+            font-size: 0.8rem;
+            color: #0091ff;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            background: #24699d;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+        
+        .contact-btn:hover {
+            background: #1c5580;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+        
+        .contact-info::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .contact-info::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .info-card ion-icon {
+            font-size: 2rem;
+            color: #0091ff;
+            flex-shrink: 0;
+        }
+        
+        .info-card-content h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .info-card-content p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .map-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background: rgba(22, 41, 56, 0.6);
+        }
+        
+        .map-placeholder ion-icon {
+            font-size: 2.5rem;
+            color: #0091ff;
+            margin-bottom: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: #0091ff;
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .contact-container {
+                gap: 15px;
+            }
+            
+            .contact-form-container h1 {
+                font-size: 1.9rem;
+            }
+            
+            .info-card {
+                padding: 12px;
+            }
+            
+            .info-card ion-icon {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                max-height: none;
+                height: auto;
+            }
+            
+            .contact-content {
+                align-items: flex-start;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 50px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            
+            .contact-form-container {
+                order: 2;
+            }
+            
+            .contact-info {
+                overflow-y: visible;
+            }
+            
+            .map-container {
+                height: 180px;
+            }
+            
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                background-position: 30% center; /* Adjust background position for smaller screens */
+            }
+            
+            .contact-form-container h1 {
+                font-size: 1.7rem;
+            }
+            
+            .contact-form-container p {
+                font-size: 0.9rem;
+            }
+            
+            .form-group label {
+                font-size: 0.85rem;
+            }
+            
+            .info-card-content h3 {
+                font-size: 1rem;
+            }
+            
+            .info-card-content p {
+                font-size: 0.85rem;
+            }
+            
+            .social-links a {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 15px 0 0;
+                width: 100%;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 20px 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <h2 class="logo">TMATS</h2>
-        <nav class="navigation">
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
             <a th:href="@{/About}">About</a>
             <a th:href="@{/Services}">Services</a>
@@ -18,6 +412,86 @@
             <button class="btnlogin-popup">Login</button>
         </nav>
     </header>
+    
+    <!-- Contact Page Content -->
+    <div class="contact-content">
+        <div class="contact-container">
+            <div class="contact-form-container">
+                <h1>Get In Touch</h1>
+                <p>Have questions about our services or need a quote? Fill out the form below and we'll get back to you as soon as possible.</p>
+                
+                <form class="contact-form" th:action="@{/contact-submit}" method="post">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" required placeholder=" ">
+                        <label for="name">Your Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" required placeholder=" ">
+                        <label for="email">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" placeholder=" ">
+                        <label for="phone">Phone Number</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" required placeholder=" "></textarea>
+                        <label for="message">Your Message</label>
+                    </div>
+                    <button type="submit" class="contact-btn">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <div class="info-card">
+                    <ion-icon name="location-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Our Location</h3>
+                        <p>123 College Street, Campus Area</p>
+                        <p>Hyderabad, Telangana 500032</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <ion-icon name="call-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Call Us</h3>
+                        <p>+91 9876543210</p>
+                        <p>Monday to Saturday, 9am to 7pm</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Email Us</h3>
+                        <p>info@tmatsxerox.com</p>
+                        <p>support@tmatsxerox.com</p>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <ion-icon name="map-outline"></ion-icon>
+                        <p>TMATS Xerox Location</p>
+                        <p>Near College Campus, Central Area</p>
+                    </div>
+                    <!-- Map iframe would go here in production -->
+                </div>
+                
+                <div class="info-card">
+                    <ion-icon name="share-social-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Follow Us</h3>
+                        <p>Stay connected with us on social media</p>
+                        <div class="social-links">
+                            <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                            <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+                            <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+                            <a href="#"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="wrapper">
         <span class="icon-close"><ion-icon name="close"></ion-icon></span>
@@ -80,5 +554,32 @@
     <script src="/js/script.js"></script> 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

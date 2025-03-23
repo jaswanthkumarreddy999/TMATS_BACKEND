@@ -4,13 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TMATS - Home</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .home-content {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 80px 20px 20px;
+        }
+        
+        .content-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            max-height: 700px;
+        }
+        
+        .content-text {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            background: rgba(22, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .content-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .content-text p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .content-boxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, auto);
+            gap: 15px;
+            overflow: hidden;
+        }
+        
+        .small-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .small-box ion-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #0091ff;
+        }
+        
+        .small-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .small-box p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+        
+        .large-box {
+            grid-column: span 2;
+            background: rgba(0, 145, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .large-box h3 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .home-btn {
+            display: inline-block;
+            background: #24699d;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .home-btn:hover {
+            background: #1c5580;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+        }
+        
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .content-container {
+                gap: 15px;
+            }
+            
+            .content-text h1 {
+                font-size: 2rem;
+            }
+            
+            .content-text p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 15px 0 0;
+                width: 100%;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content-container {
+                grid-template-columns: 1fr;
+                max-height: none;
+                height: auto;
+            }
+            
+            .content-text {
+                padding: 15px;
+            }
+            
+            .content-boxes {
+                order: 2;
+            }
+            
+            .home-content {
+                align-items: flex-start;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 50px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                background-position: 30% center; /* Adjust background position for smaller screens */
+            }
+            
+            .content-text h1 {
+                font-size: 1.7rem;
+            }
+            
+            .small-box {
+                padding: 10px;
+            }
+            
+            .small-box h3 {
+                font-size: 1rem;
+            }
+            
+            .small-box p {
+                font-size: 0.8rem;
+            }
+            
+            .large-box h3 {
+                font-size: 1rem;
+            }
+            
+            header {
+                padding: 20px 30px; 
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <h2 class="logo">TMATS</h2>
-        <nav class="navigation">
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
             <a th:href="@{/About}">About</a>
             <a th:href="@{/Services}">Services</a>
@@ -18,6 +292,45 @@
             <button class="btnlogin-popup">Login</button>
         </nav>
     </header>
+
+    <!-- Home Page Content -->
+    <div class="home-content">
+        <div class="content-container">
+            <div class="content-text">
+                <h1>TMATS Xerox Services</h1>
+                <p>Your one-stop solution for all printing, copying, and document management needs in town.</p>
+                <p>We provide high-quality services with quick turnaround times at competitive prices.</p>
+                <button class="home-btn btnlogin-popup">Get Started</button>
+            </div>
+            <div class="content-boxes">
+                <div class="small-box">
+                    <ion-icon name="print-outline"></ion-icon>
+                    <h3>Printing</h3>
+                    <p>High-quality prints in various sizes</p>
+                </div>
+                <div class="small-box">
+                    <ion-icon name="copy-outline"></ion-icon>
+                    <h3>Xerox</h3>
+                    <p>Quick B&W and color copies</p>
+                </div>
+                <div class="small-box">
+                    <ion-icon name="scan-outline"></ion-icon>
+                    <h3>Scanning</h3>
+                    <p>Document digitization</p>
+                </div>
+                <div class="small-box">
+                    <ion-icon name="document-outline"></ion-icon>
+                    <h3>Binding</h3>
+                    <p>Professional binding services</p>
+                </div>
+                <div class="large-box">
+                    <h3>Special 20% Discount for Students!</h3>
+                    <button class="home-btn btnlogin-popup">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <span class="icon-close"><ion-icon name="close"></ion-icon></span>
 
@@ -79,5 +392,33 @@
     <script src="/js/script.js"></script> 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,15 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TMATS - Home</title>
+    <title>TMATS - Services</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
-    
+    <style>
+        .services-content {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 80px 20px 20px;
+        }
+        
+        .services-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            max-height: 700px;
+        }
+        
+        .services-info {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            background: rgba(22, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .services-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 2px solid #0091ff;
+            padding-bottom: 10px;
+        }
+        
+        .services-info p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .services-pricing {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .services-pricing h3 {
+            color: #0091ff;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+            padding-bottom: 5px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, auto);
+            gap: 15px;
+            overflow: hidden;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .service-card ion-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #0091ff;
+        }
+        
+        .service-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .service-card p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+        
+        .promo-box {
+            grid-column: span 2;
+            background: rgba(0, 145, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .promo-box h4 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .services-btn {
+            display: inline-block;
+            background: #24699d;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .services-btn:hover {
+            background: #1c5580;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .services-container {
+                gap: 15px;
+            }
+            
+            .services-info h1 {
+                font-size: 2rem;
+            }
+            
+            .services-info p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            
+            .price-item {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .services-container {
+                grid-template-columns: 1fr;
+                max-height: none;
+                height: auto;
+            }
+            
+            .services-info {
+                padding: 15px;
+            }
+            
+            .services-content {
+                align-items: flex-start;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 50px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            
+            .services-grid {
+                margin-top: 15px;
+            }
+            
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                background-position: 30% center; /* Adjust background position for smaller screens */
+            }
+            
+            .services-info h1 {
+                font-size: 1.7rem;
+            }
+            
+            .service-card {
+                padding: 10px;
+            }
+            
+            .service-card h3 {
+                font-size: 1rem;
+            }
+            
+            .service-card p {
+                font-size: 0.8rem;
+            }
+            
+            .promo-box h4 {
+                font-size: 0.95rem;
+            }
+            
+            .price-item {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 15px 0 0;
+                width: 100%;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 20px 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <h2 class="logo">TMATS</h2>
-        <nav class="navigation">
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
             <a th:href="@{/About}">About</a>
             <a th:href="@{/Services}">Services</a>
@@ -19,6 +327,80 @@
             <button class="btnlogin-popup">Login</button>
         </nav>
     </header>
+    
+    <!-- Services Page Content -->
+    <div class="services-content">
+        <div class="services-container">
+            <div class="services-info">
+                <h1>Our Services</h1>
+                <p>At TMATS Xerox, we offer a comprehensive range of document and printing services for students, businesses, and individuals. Our state-of-the-art equipment and skilled team ensure high-quality results for all your needs.</p>
+                
+                <div class="services-pricing">
+                    <h3>Pricing</h3>
+                    <div class="price-item">
+                        <span>Black & White Copy (A4)</span>
+                        <span>₹2.00 / page</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Color Copy (A4)</span>
+                        <span>₹10.00 / page</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Scanning</span>
+                        <span>₹5.00 / page</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Spiral Binding</span>
+                        <span>₹30.00 - ₹80.00</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Lamination (A4)</span>
+                        <span>₹20.00 / sheet</span>
+                    </div>
+                </div>
+                
+                <button class="services-btn btnlogin-popup">Order Now</button>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <ion-icon name="print-outline"></ion-icon>
+                    <h3>Document Printing</h3>
+                    <p>High-quality prints from digital files in various paper types</p>
+                </div>
+                <div class="service-card">
+                    <ion-icon name="copy-outline"></ion-icon>
+                    <h3>Xerox Copies</h3>
+                    <p>B&W and color copies with crisp quality</p>
+                </div>
+                <div class="service-card">
+                    <ion-icon name="scan-outline"></ion-icon>
+                    <h3>Scanning Services</h3>
+                    <p>Convert physical documents to digital format</p>
+                </div>
+                <div class="service-card">
+                    <ion-icon name="book-outline"></ion-icon>
+                    <h3>Binding Services</h3>
+                    <p>Spiral and thermal binding for professional documents</p>
+                </div>
+                <div class="service-card">
+                    <ion-icon name="layers-outline"></ion-icon>
+                    <h3>Lamination</h3>
+                    <p>Protect important documents with durable lamination</p>
+                </div>
+                <div class="service-card">
+                    <ion-icon name="reader-outline"></ion-icon>
+                    <h3>Academic Materials</h3>
+                    <p>Lab manuals, records and project reports</p>
+                </div>
+                <div class="promo-box">
+                    <h4>Buy your records and lab manuals from us at a very reasonable price</h4>
+                    <button class="services-btn btnlogin-popup">Enquire Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <span class="icon-close"><ion-icon name="close"></ion-icon></span>
 
@@ -80,5 +462,32 @@
     <script src="/js/script.js"></script> 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
