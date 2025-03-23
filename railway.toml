@@ -3,6 +3,6 @@ builder = "DOCKERFILE"
 dockerfile = "Dockerfile"
 
 [deploy]
-startCommand = "java -Dserver.port=$PORT -jar app.jar"
+startCommand = "java -jar app.jar"
 healthcheckEnabled = false
 restartPolicyType = "ON_FAILURE" 
