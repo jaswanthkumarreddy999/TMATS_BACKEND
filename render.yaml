@@ -9,9 +9,17 @@ services:
         value: render
       - key: PORT
         value: 8080
+      # The database environment variables are now set in the Render dashboard
+      # These act as placeholders for documentation purposes
+      # - key: PGHOST
+      #   value: from-dashboard
+      # - key: PGPORT
+      #   value: from-dashboard  
+      # - key: PGDATABASE
+      #   value: from-dashboard
+      # - key: PGUSER
+      #   value: from-dashboard
+      # - key: PGPASSWORD
+      #   value: from-dashboard
 
-databases:
-  - name: tmats-db
-    databaseName: tmats
-    user: tmats_user
-    plan: free 
+# Removed the databases section as we're using an existing database 
