@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: tmats-backend
+    env: docker
+    buildCommand: ./mvnw package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: JDBC_DATABASE_URL
+        fromDatabase:
+          name: tmats-db
+          property: connectionString
+      - key: JDBC_DATABASE_USERNAME
+        fromDatabase:
+          name: tmats-db
+          property: user
+      - key: JDBC_DATABASE_PASSWORD
+        fromDatabase:
+          name: tmats-db
+          property: password
+
+databases:
+  - name: tmats-db
+    databaseName: tmats
+    user: tmats_user 
