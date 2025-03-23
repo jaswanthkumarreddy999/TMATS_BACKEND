@@ -102,16 +102,18 @@ header {
     width: 400px;
     height: 440px;
     background: transparent;
-    border: 2px solid rgb(255, 255, 255,.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgb(0, 0, 0,.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     transition: transform .5s ease, height .2s ease;
     z-index: 9999;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .wrapper.active-popup {
@@ -126,12 +128,16 @@ header {
 .wrapper .form-box {
     width: 100%;
     padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .wrapper .form-box.login{
     position: absolute;
     transition: transform .18s ease;
     transform: translateX(0);
+    width: 100%;
 }
 
 .wrapper.active .form-box.login {
@@ -175,6 +181,8 @@ header {
     font-size: 2em;
     color: #0091ff;
     text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .input-box {
@@ -183,6 +191,7 @@ header {
     height: 50px;
     border-bottom: 2px solid #24699d;
     margin: 30px 0;
+    text-align: left;
 }
 
 .input-box label {
@@ -229,6 +238,8 @@ header {
     margin: -15px 0px 15px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    text-align: left;
 }
 
 .remember-forget label input {
@@ -257,6 +268,7 @@ header {
     color: #fff;
     font-weight: 500;
     transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 .btn:hover {
@@ -271,6 +283,7 @@ header {
     text-align: center;
     font-weight: 500;
     margin: 25px 0 10px;
+    width: 100%;
 }
 
 .login-register p a {
