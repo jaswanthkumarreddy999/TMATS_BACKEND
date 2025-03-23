@@ -8,38 +8,58 @@
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <style>
         .wrapper {
-            transform: scale(1);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 400px;
             height: 420px;
-            min-width: 420px;
+            background: transparent;
+            border: 2px solid rgb(255, 255, 255,.5);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 30px rgb(0, 0, 0,.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 9999;
         }
+        
         .form-box {
             width: 100%;
-            min-width: 380px;
+            padding: 40px;
         }
+        
         #error-message {
             color: #ff0000;
             text-align: center;
             margin-bottom: 10px;
             display: none;
         }
+        
         #success-message {
             color: #00a300;
             text-align: center;
             margin-bottom: 10px;
             display: none;
         }
+        
         .return-home {
             text-align: center;
             margin-top: 10px;
         }
+        
         .return-home a {
             color: #24699d;
             text-decoration: none;
             font-weight: 600;
         }
+        
         .return-home a:hover {
             text-decoration: underline;
         }
+        
         .btn-container {
             display: flex;
             justify-content: space-between;
@@ -47,6 +67,7 @@
             gap: 12px;
             width: 100%;
         }
+        
         .btn-secondary {
             flex: 1;
             min-width: 140px;
@@ -66,42 +87,146 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        
         .btn-secondary:hover {
             background: #24699d;
             color: #fff;
             transform: translateY(-2px);
         }
+        
         .btn {
             flex: 1;
             min-width: 100px;
             height: 50px;
-            background: transparent;
-            border: 3px solid #24699d;
+            background: #24699d;
+            border: none;
             outline: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
-            color: #24699d;
+            color: #fff;
             font-weight: 500;
-            transition: background 0.3s, color 0.3s, transform 0.2s;
+            transition: all 0.3s ease;
             padding: 0 15px;
-            line-height: 44px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        
         .btn:hover {
-            background: #24699d;
-            color: #fff;
+            background: #1c5580;
             transform: translateY(-2px);
-            border-color: #24699d;
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .wrapper {
+                width: 90%;
+                max-width: 400px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .wrapper {
+                width: 85%;
+                height: auto;
+                min-height: 420px;
+            }
+            
+            .form-box {
+                padding: 30px 20px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn, .btn-secondary {
+                height: 45px;
+                line-height: 40px;
+                font-size: 0.95em;
+            }
+        }
+        
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 20px 30px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <h2 class="logo">TMATS</h2>
-        <nav class="navigation">
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
             <a th:href="@{/About}">About</a>
             <a th:href="@{/Services}">Services</a>
@@ -230,5 +355,33 @@
     
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html> 
