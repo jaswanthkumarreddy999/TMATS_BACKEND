@@ -25,8 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (iconClose) {
         iconClose.addEventListener('click', () => {
-            console.log("Close button clicked!");
             wrapper.classList.remove('active-popup');
+            // Reset the form state when closing
+            wrapper.classList.remove('active');
         });
     }
 
@@ -34,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('click', function(e) {
         if (e.target === wrapper) {
             wrapper.classList.remove('active-popup');
+            // Reset the form state when clicking outside
+            wrapper.classList.remove('active');
         }
     });
 });
