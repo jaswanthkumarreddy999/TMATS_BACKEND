@@ -19,9 +19,9 @@ public class SecurityConfig {
                 .requestMatchers("/Contact","/Products","/Services","/About","/Home", "/Register", "/Login", 
                                 "/forgot-password", "/reset-password", "/forgot-password-submit", "/api/auth/forgot-password", "/api/auth/reset-password",
                                 "/css/**", "/js/**", "/images/**", "/static/**", 
-                                "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard",
+                                "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard","/admin/dashboard",
                                 "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community").permitAll()
-                .requestMatchers("/Admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/Admin/**", "/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated() // Protect all other routes
             )
             .formLogin(form -> form

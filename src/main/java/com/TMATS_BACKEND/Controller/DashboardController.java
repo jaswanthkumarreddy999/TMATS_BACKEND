@@ -77,6 +77,62 @@ public class DashboardController {
         return "admin-dashboard";
     }
     
+    // Updated lowercase admin dashboard route for consistency
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard(HttpSession session, Model model) {
+        return greetadmin(session, model);
+    }
+    
+    // New admin routes for users, data, and crops
+    @GetMapping("/admin/users")
+    public String adminUsers(HttpSession session, Model model) {
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        
+        model.addAttribute("email", session.getAttribute("user"));
+        return "admin-users";
+    }
+    
+    @GetMapping("/admin/data")
+    public String adminData(HttpSession session, Model model) {
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        
+        model.addAttribute("email", session.getAttribute("user"));
+        return "admin-data";
+    }
+    
+    @GetMapping("/admin/crops")
+    public String adminCrops(HttpSession session, Model model) {
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        
+        model.addAttribute("email", session.getAttribute("user"));
+        return "admin-crops";
+    }
+    
+    // Helper method to validate admin access
+    private boolean validateAdminAccess(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return false;
+        }
+        
+        Object roleObj = session.getAttribute("role");
+        
+        if (roleObj != null) {
+            if (roleObj instanceof Role && roleObj == Role.ADMIN) {
+                return true;
+            } else if (roleObj.toString().equals("ADMIN")) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     // Debug endpoint to print session info
     @GetMapping("/debug-session")
     @ResponseBody
