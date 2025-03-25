@@ -73,6 +73,18 @@ public class UserController {
         return "contact";
     }
     
+    @GetMapping("/knowledge")
+    public String knowledge(Model model, HttpSession session) {
+        // Add any user information from session if available
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("email", session.getAttribute("user"));
+        } else {
+            model.addAttribute("email", "Guest User");
+        }
+        // For now, redirect to community page until a knowledge page is created
+        return "redirect:/Community";
+    }
+    
     /**
      * Display the verify OTP page
      */

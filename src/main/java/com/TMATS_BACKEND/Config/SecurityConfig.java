@@ -21,7 +21,7 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**", "/static/**", "/fonts/**", "/favicon.ico",
                                 "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard",
                                 "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community",
-                                "/debug-session", "/test/**").permitAll()
+                                "/debug-session", "/test/**", "/knowledge").permitAll()
                 .requestMatchers("/Admin/Dashboard", "/admin/dashboard", 
                                  "/Admin/users", "/admin/users", 
                                  "/Admin/data", "/admin/data", 
