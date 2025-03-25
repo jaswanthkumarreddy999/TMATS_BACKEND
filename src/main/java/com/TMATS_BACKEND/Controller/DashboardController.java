@@ -74,6 +74,7 @@ public class DashboardController {
         // Add user information to the model
         model.addAttribute("email", session.getAttribute("user"));
         
+        System.out.println("Returning admin-dashboard template directly");
         return "admin-dashboard";
     }
     
@@ -81,7 +82,38 @@ public class DashboardController {
     @GetMapping("/admin/dashboard")
     public String adminDashboard(HttpSession session, Model model) {
         System.out.println("Admin Dashboard controller accessed (lowercase)");
-        return greetadmin(session, model);
+        // Don't call greetadmin to avoid potential redirect loops
+        // Instead, duplicate the logic to avoid redirect loops
+        
+        // Check if user is logged in
+        if (session.getAttribute("user") == null) {
+            return "redirect:/Home";
+        }
+        
+        // Verify admin role
+        Object roleObj = session.getAttribute("role");
+        System.out.println("Role in lowercase admin Dashboard controller: " + roleObj + 
+                           " (" + (roleObj != null ? roleObj.getClass().getName() : "null") + ")");
+        
+        boolean isAdmin = false;
+        
+        if (roleObj != null) {
+            if (roleObj instanceof Role && roleObj == Role.ADMIN) {
+                isAdmin = true;
+            } else if (roleObj.toString().equals("ADMIN")) {
+                isAdmin = true;
+            }
+        }
+        
+        if (!isAdmin) {
+            return "redirect:/Dashboard";
+        }
+        
+        // Add user information to the model
+        model.addAttribute("email", session.getAttribute("user"));
+        
+        System.out.println("Returning admin-dashboard template directly from lowercase controller");
+        return "admin-dashboard";
     }
     
     // New admin routes for users, data, and crops
