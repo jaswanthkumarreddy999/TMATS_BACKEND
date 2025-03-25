@@ -260,10 +260,10 @@
             <span></span>
         </div>
         <nav class="navigation" id="navigation">
-            <a th:href="@{/Admin/Dashboard}" class="active">Dashboard</a>
-            <a th:href="@{/Admin/users}">Manage Users</a>
-            <a th:href="@{/Admin/data}">AI Training Data</a>
-            <a th:href="@{/Admin/crops}">Crop Management</a>
+            <a th:href="@{/admin/dashboard}" class="active">Dashboard</a>
+            <a th:href="@{/admin/users}">Manage Users</a>
+            <a th:href="@{/admin/data}">AI Training Data</a>
+            <a th:href="@{/admin/crops}">Crop Management</a>
             <a href="#" class="logout-link">
                 <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
                     <button type="submit" class="btnlogin-popup">Logout</button>
@@ -304,7 +304,7 @@
                 </div>
                 <h3 class="card-title">User Management</h3>
                 <p class="card-description">Manage urban farmers and community members across the platform.</p>
-                <a href="#" class="card-link">Manage Users</a>
+                <a th:href="@{/admin/users}" class="card-link">Manage Users</a>
             </div>
 
             <div class="dashboard-card">
@@ -313,7 +313,7 @@
                 </div>
                 <h3 class="card-title">AI Performance</h3>
                 <p class="card-description">Monitor AI recommendation accuracy and model performance.</p>
-                <a href="#" class="card-link">View Analytics</a>
+                <a th:href="@{/admin/data}" class="card-link">View Analytics</a>
             </div>
 
             <div class="dashboard-card">
@@ -322,7 +322,7 @@
                 </div>
                 <h3 class="card-title">Crop Database</h3>
                 <p class="card-description">Manage the crop database and growing recommendations.</p>
-                <a href="#" class="card-link">Edit Database</a>
+                <a th:href="@{/admin/crops}" class="card-link">Edit Database</a>
             </div>
 
             <div class="dashboard-card">
@@ -340,7 +340,7 @@
                 </div>
                 <h3 class="card-title">Data Management</h3>
                 <p class="card-description">Review and manage user-contributed growing data for AI training.</p>
-                <a href="#" class="card-link">View Data</a>
+                <a th:href="@{/admin/data}" class="card-link">View Data</a>
             </div>
 
             <div class="dashboard-card">
