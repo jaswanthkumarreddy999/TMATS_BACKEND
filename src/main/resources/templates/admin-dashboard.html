@@ -159,14 +159,21 @@
                 display: block;
             }
             
-            .navigation form {
+            .navigation .logout-link {
+                margin: 15px 0 0;
                 width: 100%;
-                margin-top: 15px;
+                display: block;
+            }
+            
+            .navigation .logout-link form {
+                width: 100%;
+                margin: 0;
             }
             
             .navigation .btnlogin-popup {
                 margin: 0;
                 width: 100%;
+                font-size: 1.1rem;
             }
             
             /* Hamburger animation for active state */
@@ -186,6 +193,57 @@
                 padding: 15px 20px;
             }
         }
+        /* Admin navbar styles */
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation .logout-link {
+            margin-left: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+        
+        .navigation .logout-link form {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navigation .btnlogin-popup {
+            width: 130px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #fff;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            transition: .5s;
+        }
+        
+        .navigation .btnlogin-popup:hover {
+            background: #45a049;
+            color: #fff;
+            border-color: #45a049;
+        }
+        
+        /* Update responsive styles */
+        @media (max-width: 992px) {
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form,
+            .navigation .btnlogin-popup {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -201,9 +259,11 @@
             <a th:href="@{/Admin/users}">Manage Users</a>
             <a th:href="@{/Admin/data}">AI Training Data</a>
             <a th:href="@{/Admin/crops}">Crop Management</a>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btnlogin-popup">Logout</button>
-            </form>
+            <a href="#" class="logout-link">
+                <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+                    <button type="submit" class="btnlogin-popup">Logout</button>
+                </form>
+            </a>
         </nav>
     </header>
 
@@ -302,13 +362,24 @@
         });
         
         // Close menu when clicking a navigation link
-        const navLinks = document.querySelectorAll('.navigation a');
+        const navLinks = document.querySelectorAll('.navigation a:not(.logout-link)');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('active');
                 navigation.classList.remove('active');
             });
         });
+        
+        // Handle logout form click - don't close menu until form submits
+        const logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+                // Only prevent default if it's a direct click on the link (not the button)
+                if (e.target === logoutLink) {
+                    e.preventDefault();
+                }
+            });
+        }
         
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
