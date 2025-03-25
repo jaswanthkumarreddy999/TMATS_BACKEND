@@ -172,4 +172,20 @@ public class DashboardController {
         
         return sb.toString();
     }
+    
+    // Uppercase admin routes for backward compatibility
+    @GetMapping("/Admin/users")
+    public String adminUsersUppercase(HttpSession session, Model model) {
+        return "redirect:/admin/users";
+    }
+    
+    @GetMapping("/Admin/data")
+    public String adminDataUppercase(HttpSession session, Model model) {
+        return "redirect:/admin/data";
+    }
+    
+    @GetMapping("/Admin/crops")
+    public String adminCropsUppercase(HttpSession session, Model model) {
+        return "redirect:/admin/crops";
+    }
 }
