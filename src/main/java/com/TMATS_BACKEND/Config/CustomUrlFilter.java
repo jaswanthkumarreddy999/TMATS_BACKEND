@@ -33,11 +33,15 @@ public class CustomUrlFilter implements Filter {
         if (path.startsWith("/css/") || 
             path.startsWith("/js/") || 
             path.startsWith("/images/") || 
-            path.contains("favicon.png") ||
+            path.startsWith("/static/") ||
+            path.contains("favicon") ||
             path.endsWith(".css") ||
             path.endsWith(".js") ||
             path.endsWith(".png") ||
             path.endsWith(".jpg") ||
+            path.endsWith(".jpeg") ||
+            path.endsWith(".gif") ||
+            path.endsWith(".svg") ||
             path.endsWith(".ico")) {
             System.out.println("Skipping filter for static resource: " + path);
             chain.doFilter(request, response);

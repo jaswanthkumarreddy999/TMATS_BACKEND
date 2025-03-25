@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('/images/BG3.jpg') no-repeat;
+    background: url('../images/bgof.png') no-repeat;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -51,7 +51,7 @@ header {
 .navigation a {
     position: relative;
     font-size: 1.1em;
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     margin-left: 40px;
@@ -63,13 +63,13 @@ header {
     bottom:-6px;
     width: 100%;
     height: 3px;
-    background: #fff;
-    background: radius 5px;
+    background: #45a049;
+    border-radius: 5px;
     transform-origin: right;
     transform: scaleX(0);
     transition: transform .5s;
 }
-.navigation a:hover:after {
+.navigation a:hover::after {
     transform-origin: left;
     transform: scaleX(1);
 }
@@ -82,16 +82,15 @@ header {
     border-radius: 6px;
     cursor: pointer;
     font-size: 1.1em;
-    color:#fff;
+    color: #fff;
     font-weight: 500;
     margin-left: 40px;
     transition: .5s;
 }
 .navigation .btnlogin-popup:hover {
-    background: #fff;
-    color: #162938;
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    background: #45a049;
+    color: #fff;
+    border-color: #45a049;
 }
 
 .wrapper {
@@ -101,7 +100,7 @@ header {
     transform: translate(-50%, -50%) scale(0);
     width: 400px;
     height: 440px;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(20px);
@@ -176,19 +175,20 @@ header {
     right: 0;
     width: 45px;
     height: 45px;
-    background: #162938;
+    background: #45a049;
     font-size: 2em;
-    color: #fff;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     border-bottom-left-radius: 20px;
     cursor: pointer;
+    z-index: 1;
 }
 
-.form-box h2 {
+.wrapper .form-box h2 {
     font-size: 2em;
-    color: #0091ff;
+    color: #45a049;
     text-align: center;
     width: 100%;
     margin-bottom: 10px;
@@ -198,9 +198,8 @@ header {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid #24699d;
+    border-bottom: 2px solid #45a049;
     margin: 30px 0;
-    text-align: left;
 }
 
 .input-box label {
@@ -209,25 +208,26 @@ header {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    color:#24699d;
+    color: white;
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
 }
 
-.input-box input:focus ~ label,
-.input-box input:not(:placeholder-shown) ~ label {
-    top: -10px;
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+    color: #45a049;
 }
 
 .input-box input {
-    color: white;
     width: 100%;
     height: 100%;
     background: transparent;
     border: none;
     outline: none;
-    font-size: 1.1em;
+    font-size: 1em;
+    color: white;
     font-weight: 600;
     padding: 0 35px 0 5px;
 }
@@ -257,7 +257,7 @@ header {
 }
 
 .remember-forget a {
-    color: #0091ff;
+    color: #45a049;
     text-decoration: none;
 }
 
@@ -268,7 +268,7 @@ header {
 .btn {
     width: 100%;
     height: 45px;
-    background: #24699d;
+    background: #45a049;
     border: none;
     outline: none;
     border-radius: 6px;
@@ -288,7 +288,7 @@ header {
 
 .login-register {
     font-size: .9em;
-    color: #24699d;
+    color: #fff;
     text-align: center;
     font-weight: 500;
     margin: 25px 0 10px;
@@ -296,7 +296,7 @@ header {
 }
 
 .login-register p a {
-    color: #24699d;
+    color: #45a049;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -304,8 +304,6 @@ header {
 
 .login-register p a:hover {
     text-decoration: underline;
-    color: #0091ff;
-    text-shadow: 0 0 2px rgba(0, 145, 255, 0.3);
 }
 
 nput:-webkit-autofill {
@@ -372,6 +370,89 @@ nput:-webkit-autofill {
     .wrapper.active {
         min-height: 520px;
     }
+}
+
+.card-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+    color: #45a049;
+}
+
+.card-link {
+    margin-top: auto;
+    padding: 10px 25px;
+    background: #45a049;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.card-link:hover {
+    background: #378038;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(69, 160, 73, 0.4);
+}
+
+.stat-value, .stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #45a049;
+}
+
+/* Update community and services section buttons */
+.community-btn, .services-btn, .about-btn, .home-btn, .contact-btn {
+    padding: 12px 30px;
+    background: #45a049;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.community-btn:hover, .services-btn:hover, .about-btn:hover, .home-btn:hover, .contact-btn:hover {
+    background: #378038;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(69, 160, 73, 0.3);
+}
+
+/* Highlight active navigation */
+.navigation a.active {
+    color: #45a049;
+    font-weight: 600;
+}
+
+.navigation a.active::after {
+    transform: scaleX(1);
+}
+
+.icon-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.icon-row ion-icon {
+    font-size: 1.7em;
+    color: #45a049;
+    margin: 0 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.icon-row ion-icon:hover {
+    color: #378038;
+    transform: scale(1.2);
 }
 
 

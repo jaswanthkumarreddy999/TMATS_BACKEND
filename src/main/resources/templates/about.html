@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenHarvest - About</title>
+    <title>Urban Farm - About Us</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <style>
@@ -36,7 +36,7 @@
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(5px);
-            background: rgba(37, 78, 31, 0.7);
+            background: rgba(22, 41, 56, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
@@ -58,7 +58,7 @@
             font-size: 2.2rem;
             margin-bottom: 15px;
             color: #fff;
-            border-bottom: 2px solid #69B578;
+            border-bottom: 2px solid #0091ff;
             padding-bottom: 10px;
         }
         
@@ -355,7 +355,7 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">GreenHarvest</h2>
+        <h2 class="logo">GrowSmart</h2>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
@@ -363,8 +363,9 @@
         </div>
         <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
-            <a th:href="@{/About}">About</a>
-            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/About}">About Us</a>
+            <a th:href="@{/Products}">Our Produce</a>
+            <a th:href="@{/Community}">Community</a>
             <a th:href="@{/Contact}">Contact</a>
             <button class="btnlogin-popup">Login</button>
         </nav>
@@ -374,67 +375,94 @@
     <div class="about-content">
         <div class="about-container">
             <div class="about-main">
-                <h1>About GreenHarvest</h1>
-                <p>Founded in 2019, GreenHarvest has been at the forefront of the urban farming revolution, empowering city dwellers to grow their own fresh, organic produce regardless of space limitations. What started as a small community garden project has grown into a comprehensive urban farming solution provider.</p>
-                <p>Our mission is to reconnect people with their food by making sustainable farming accessible to everyone, regardless of their living situation. We believe that everyone deserves access to fresh, nutrient-rich food that they can grow themselves.</p>
-                <p>At GreenHarvest, we invest in research and development to create innovative growing solutions that maximize yield while minimizing environmental impact. Our team of agricultural experts, engineers, and sustainability advocates work together to design products that make urban farming easy and enjoyable.</p>
+                <h1>Our Vision & Technology</h1>
+                <p>GrowSmart is a revolutionary platform that uses artificial intelligence to optimize urban farming practices. Founded in 2022, our mission is to transform underutilized urban spaces into productive, sustainable food sources while building community connections and resilience.</p>
                 
-                <h2>Our Values</h2>
-                <ul>
-                    <li><strong>Sustainability:</strong> We're committed to environmentally-friendly practices in everything we do.</li>
-                    <li><strong>Innovation:</strong> We constantly evolve our solutions to meet urban farmers' needs.</li>
-                    <li><strong>Education:</strong> We believe in empowering people with the knowledge to grow successfully.</li>
-                    <li><strong>Community:</strong> We foster connections between urban farmers to share knowledge and resources.</li>
-                    <li><strong>Quality:</strong> We provide only the highest quality products and services.</li>
+                <p>Our AI technology analyzes multiple data points including local climate patterns, microclimate variations, available space dimensions, sunlight exposure, water access, and resource constraints to provide customized farming recommendations. What previously took years of experience to master can now be accessed instantly through our advanced algorithms.</p>
+                
+                <p>We've built our system on data collected from thousands of successful urban farms worldwide, continuously refined through machine learning. The result is a platform that not only suggests what to grow, but how to grow it optimally in your specific urban environment.</p>
+                
+                <h2 style="margin-top: 20px; font-size: 1.5rem; color: #0091ff;">How Our AI Works</h2>
+                <p>Our recommendation engine considers:</p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Hyperlocal climate data and seasonal patterns</li>
+                    <li>Space constraints and orientation</li>
+                    <li>Light availability throughout the day</li>
+                    <li>Water access and conservation needs</li>
+                    <li>Local urban ecosystem factors</li>
+                    <li>Resource availability and constraints</li>
                 </ul>
                 
-                <h2>Our Team</h2>
-                <p>Our diverse team brings together expertise in horticulture, sustainable agriculture, engineering, and education. We're united by a passion for making urban farming accessible and enjoyable for everyone.</p>
+                <p>The platform then matches these factors against our extensive database of crop varieties, growing techniques, and community knowledge to deliver personalized recommendations with the highest probability of success.</p>
                 
-                <h2>Our Commitment</h2>
-                <p>We're committed to sustainability in all aspects of our business. Our seed kits use biodegradable packaging, our growing systems are designed to minimize water usage, and we prioritize local sourcing to reduce our carbon footprint.</p>
-                
-                <p>Join us in revolutionizing how urban dwellers connect with their food and environment!</p>
+                <div class="about-stats">
+                    <div class="stat-box">
+                        <div class="number">15,000+</div>
+                        <div class="label">Active Urban Farmers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">98%</div>
+                        <div class="label">Success Rate</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">250+</div>
+                        <div class="label">Cities Worldwide</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">10M+</div>
+                        <div class="label">Data Points Analyzed</div>
+                    </div>
+                </div>
             </div>
             
             <div class="team-section">
                 <div class="team-member">
-                    <div class="member-avatar">JR</div>
+                    <div class="member-avatar">AI</div>
                     <div class="member-info">
-                        <h3>Jaswanth Reddy</h3>
-                        <p>Founder & CEO</p>
-                        <p>Leading our vision since 2010</p>
+                        <h3>CropAssistAI</h3>
+                        <p>Our core recommendation engine that processes environmental data and provides optimized growing plans</p>
                     </div>
                 </div>
                 <div class="team-member">
-                    <div class="member-avatar">AS</div>
+                    <div class="member-avatar">DS</div>
                     <div class="member-info">
-                        <h3>Anjali Singh</h3>
-                        <p>Operations Manager</p>
-                        <p>Ensuring smooth service delivery</p>
+                        <h3>Dr. Sofia Chen</h3>
+                        <p>Agricultural Data Scientist & Machine Learning Expert</p>
                     </div>
                 </div>
                 <div class="team-member">
-                    <div class="member-avatar">RP</div>
+                    <div class="member-avatar">MG</div>
                     <div class="member-info">
-                        <h3>Rohit Patel</h3>
-                        <p>Lead Technician</p>
-                        <p>Expert in equipment maintenance</p>
+                        <h3>Marcus Garcia</h3>
+                        <p>Urban Agriculture Specialist & Community Development</p>
                     </div>
                 </div>
                 <div class="team-member">
-                    <div class="member-avatar">NS</div>
+                    <div class="member-avatar">JK</div>
                     <div class="member-info">
-                        <h3>Neha Sharma</h3>
-                        <p>Customer Support</p>
-                        <p>Handling client needs since 2015</p>
+                        <h3>Dr. Jamal Khan</h3>
+                        <p>Climate Science & Environmental Systems Researcher</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">LP</div>
+                    <div class="member-info">
+                        <h3>Luna Patel</h3>
+                        <p>Community Engagement & Knowledge Network Manager</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">RN</div>
+                    <div class="member-info">
+                        <h3>Dr. Rachel Nguyen</h3>
+                        <p>Sustainable Resource Management & Food Systems Designer</p>
                     </div>
                 </div>
             </div>
             
             <div class="about-cta">
-                <h3>Experience Quality Printing Services Today!</h3>
-                <a href="#" class="btn"><button class="about-btn">Join Our Community</button></a>
+                <h3>Experience data-driven, AI-powered urban farming for yourself</h3>
+                <button class="about-btn btnlogin-popup">Get Started Today</button>
             </div>
         </div>
     </div>

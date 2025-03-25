@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - TMATS</title>
+    <title>Dashboard - GrowSmart</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <style>
@@ -100,16 +100,45 @@
         .logout-btn:hover {
             background: rgba(0, 0, 255);
         }
+        
+        .garden-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #0091ff;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+        }
     </style>
 </head>
 <body>
     <header>
-        <h2 class="logo">TMATS</h2>
+        <h2 class="logo">GrowSmart</h2>
         <nav class="navigation">
             <a th:href="@{/Dashboard}" class="active">Dashboard</a>
+            <a th:href="@{/garden-planner}">Garden Planner</a>
+            <a th:href="@{/community}">Community</a>
             <a th:href="@{/profile}">Profile</a>
-            <a th:href="@{/settings}">Settings</a>
-            <a th:href="@{/help}">Help</a>
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btnlogin-popup">Logout</button>
             </form>
@@ -118,63 +147,82 @@
 
     <div class="dashboard-container">
         <div class="welcome-section">
-            <h1>Welcome, <span th:text="${session.user}">User</span>!</h1>
-            <p>This is your personal dashboard. You can manage your account and view your activities here.</p>
+            <h1>Welcome to your GrowSmart Dashboard, <span th:text="${session.user}">Urban Farmer</span>!</h1>
+            <p>Track your garden's performance, get personalized recommendations, and connect with the urban farming community from this central hub.</p>
+        </div>
+        
+        <div class="garden-stats">
+            <div class="stat-card">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Active Gardens</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Crops Growing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">83%</div>
+                <div class="stat-label">Growth Health</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Days to Harvest</div>
+            </div>
         </div>
 
         <div class="dashboard-grid">
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="person-circle"></ion-icon>
+                    <ion-icon name="leaf-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">My Profile</h3>
-                <p class="card-description">View and update your personal information and preferences.</p>
-                <a href="#" class="card-link">View Profile</a>
+                <h3 class="card-title">My Gardens</h3>
+                <p class="card-description">View and manage your urban gardens and growing spaces.</p>
+                <a href="#" class="card-link">Manage Gardens</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="calendar"></ion-icon>
+                    <ion-icon name="analytics-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">Appointments</h3>
-                <p class="card-description">Manage your upcoming appointments and view your history.</p>
-                <a href="#" class="card-link">View Appointments</a>
+                <h3 class="card-title">Growth Tracking</h3>
+                <p class="card-description">Monitor your crops' progress and optimize growing conditions.</p>
+                <a href="#" class="card-link">View Analytics</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="notifications"></ion-icon>
+                    <ion-icon name="bulb-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">Notifications</h3>
-                <p class="card-description">Check your recent notifications and updates.</p>
-                <a href="#" class="card-link">View Notifications</a>
+                <h3 class="card-title">AI Recommendations</h3>
+                <p class="card-description">Get personalized crop and care suggestions based on your data.</p>
+                <a href="#" class="card-link">View Recommendations</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="document-text"></ion-icon>
+                    <ion-icon name="calendar-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">Documents</h3>
-                <p class="card-description">Access your important documents and files.</p>
-                <a href="#" class="card-link">View Documents</a>
+                <h3 class="card-title">Planting Calendar</h3>
+                <p class="card-description">Plan your seasonal planting schedule with AI optimization.</p>
+                <a href="#" class="card-link">View Calendar</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="chatbubbles"></ion-icon>
+                    <ion-icon name="people-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">Messages</h3>
-                <p class="card-description">View and send messages to our support team.</p>
-                <a href="#" class="card-link">View Messages</a>
+                <h3 class="card-title">Community</h3>
+                <p class="card-description">Connect with nearby urban farmers and share knowledge.</p>
+                <a href="#" class="card-link">Join Discussions</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <ion-icon name="settings"></ion-icon>
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
                 </div>
-                <h3 class="card-title">Settings</h3>
-                <p class="card-description">Update your account settings and preferences.</p>
-                <a href="#" class="card-link">View Settings</a>
+                <h3 class="card-title">Data Contribution</h3>
+                <p class="card-description">Share your growing results to improve our AI recommendations.</p>
+                <a href="#" class="card-link">Submit Data</a>
             </div>
         </div>
     </div>

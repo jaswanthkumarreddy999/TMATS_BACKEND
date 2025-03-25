@@ -31,6 +31,11 @@ public class UserController {
         this.otpService = otpService;
     }
 
+    @GetMapping("/")
+    public String root() {
+        return "redirect:/Home";
+    }
+
     @GetMapping("/Home")
     public String home(Model model) {
         model.addAttribute("RegisterDTO", new RegisterDTO());
@@ -42,6 +47,18 @@ public class UserController {
         model.addAttribute("RegisterDTO", new RegisterDTO());
         model.addAttribute("LoginDTO", new LoginDTO());
         return "services";
+    }
+    @GetMapping("/Products")
+    public String products(Model model) {
+        model.addAttribute("RegisterDTO", new RegisterDTO());
+        model.addAttribute("LoginDTO", new LoginDTO());
+        return "products";
+    }
+    @GetMapping("/Community")
+    public String community(Model model) {
+        model.addAttribute("RegisterDTO", new RegisterDTO());
+        model.addAttribute("LoginDTO", new LoginDTO());
+        return "community";
     }
     @GetMapping("/About")
     public String about(Model model) {

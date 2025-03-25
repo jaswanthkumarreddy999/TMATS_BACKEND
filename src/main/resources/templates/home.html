@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenHarvest - Home</title>
+    <title>Urban Farm - Home</title>
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
@@ -35,7 +35,7 @@
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(5px);
-            background: rgba(37, 78, 31, 0.7);
+            background: rgba(22, 41, 56, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
@@ -77,7 +77,7 @@
         .small-box ion-icon {
             font-size: 1.8rem;
             margin-bottom: 8px;
-            color: #69B578;
+            color: #0091ff;
         }
         
         .small-box h3 {
@@ -94,7 +94,7 @@
         
         .large-box {
             grid-column: span 2;
-            background: rgba(105, 181, 120, 0.25);
+            background: rgba(0, 145, 255, 0.15);
             border-radius: 10px;
             padding: 15px;
             text-align: center;
@@ -109,7 +109,7 @@
         
         .home-btn {
             display: inline-block;
-            background: #3A7D44;
+            background: #24699d;
             color: white;
             padding: 8px 20px;
             border-radius: 6px;
@@ -122,9 +122,9 @@
         }
         
         .home-btn:hover {
-            background: #2C6135;
+            background: #1c5580;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(58, 125, 68, 0.4);
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
         }
         
         /* Hamburger Menu Styles */
@@ -171,7 +171,7 @@
                 right: -100%;
                 width: 250px;
                 height: 100vh;
-                background: rgba(37, 78, 31, 0.95);
+                background: rgba(22, 41, 56, 0.95);
                 backdrop-filter: blur(10px);
                 flex-direction: column;
                 align-items: flex-start;
@@ -278,7 +278,7 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">GreenHarvest</h2>
+        <h2 class="logo">Urban Farm</h2>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
@@ -286,8 +286,9 @@
         </div>
         <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
-            <a th:href="@{/About}">About</a>
-            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/About}">About Us</a>
+            <a th:href="@{/Products}">Our Produce</a>
+            <a th:href="@{/Community}">Community</a>
             <a th:href="@{/Contact}">Contact</a>
             <button class="btnlogin-popup">Login</button>
         </nav>
@@ -297,35 +298,34 @@
     <div class="home-content">
         <div class="content-container">
             <div class="content-text">
-                <h1>GreenHarvest Urban Farming</h1>
-                <p>Your sustainable solution for growing fresh, organic produce in urban spaces. Experience the joy of harvesting your own food.</p>
-                <p>We provide high-quality seeds, tools, and expert guidance for successful urban farming.</p>
-                <button class="home-btn btnlogin-popup">Get Started</button>
+                <h1>GrowSmart Urban Farm</h1>
+                <p>Welcome to our AI-powered urban farming platform connecting communities for sustainable food production. We use machine learning to recommend ideal crops based on your specific climate, space, and resources. Join our growing network of urban farmers and transform unused spaces into productive gardens.</p>
+                <a th:href="@{/About}"><button class="home-btn btnlogin-popup">Know More</button></a>
             </div>
             <div class="content-boxes">
                 <div class="small-box">
                     <ion-icon name="leaf-outline"></ion-icon>
-                    <h3>Organic Seeds</h3>
-                    <p>Premium quality organic seeds</p>
+                    <h3>AI Crop Matching</h3>
+                    <p>Climate and resource-optimized recommendations</p>
                 </div>
                 <div class="small-box">
                     <ion-icon name="water-outline"></ion-icon>
-                    <h3>Hydroponics</h3>
-                    <p>Soil-free growing solutions</p>
+                    <h3>Resource Planning</h3>
+                    <p>Smart water and space utilization tools</p>
                 </div>
                 <div class="small-box">
-                    <ion-icon name="sunny-outline"></ion-icon>
-                    <h3>Vertical Gardens</h3>
-                    <p>Space-efficient growing systems</p>
+                    <ion-icon name="people-outline"></ion-icon>
+                    <h3>Knowledge Network</h3>
+                    <p>Connect with experienced urban farmers</p>
                 </div>
                 <div class="small-box">
-                    <ion-icon name="flask-outline"></ion-icon>
-                    <h3>Composting</h3>
-                    <p>Natural fertilizers and soil</p>
+                    <ion-icon name="analytics-outline"></ion-icon>
+                    <h3>Growth Tracking</h3>
+                    <p>Monitor and optimize your garden performance</p>
                 </div>
                 <div class="large-box">
-                    <h3>Special 15% Discount for First-Time Gardeners!</h3>
-                    <button class="home-btn btnlogin-popup">Register Now</button>
+                    <h3>Our AI has helped 5,000+ urban spaces become self-sustaining food sources!</h3>
+                    <button class="home-btn btnlogin-popup">Start Your Urban Farm</button>
                 </div>
             </div>
         </div>

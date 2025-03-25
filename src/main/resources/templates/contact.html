@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TMATS - Contact</title>
+    <title>Urban Farm - Contact</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <style>
@@ -398,7 +398,7 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">TMATS</h2>
+        <h2 class="logo">GrowSmart</h2>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
@@ -406,8 +406,9 @@
         </div>
         <nav class="navigation" id="navigation">
             <a th:href="@{/Home}">Home</a>
-            <a th:href="@{/About}">About</a>
-            <a th:href="@{/Services}">Services</a>
+            <a th:href="@{/About}">About Us</a>
+            <a th:href="@{/Products}">Our Produce</a>
+            <a th:href="@{/Community}">Community</a>
             <a th:href="@{/Contact}">Contact</a>
             <button class="btnlogin-popup">Login</button>
         </nav>
@@ -418,9 +419,9 @@
         <div class="contact-container">
             <div class="contact-form-container">
                 <h1>Get In Touch</h1>
-                <p>Have questions about our services or need a quote? Fill out the form below and we'll get back to you as soon as possible.</p>
+                <p>Have questions about our AI urban farming platform? Want to schedule a personalized consultation? Or simply interested in contributing to our data collective? We'd love to hear from you. Our team of agricultural specialists and data scientists is ready to support your urban farming journey.</p>
                 
-                <form class="contact-form" th:action="@{/contact-submit}" method="post">
+                <form class="contact-form">
                     <div class="form-group">
                         <input type="text" id="name" name="name" required placeholder=" ">
                         <label for="name">Your Name</label>
@@ -430,8 +431,15 @@
                         <label for="email">Email Address</label>
                     </div>
                     <div class="form-group">
-                        <input type="tel" id="phone" name="phone" placeholder=" ">
-                        <label for="phone">Phone Number</label>
+                        <select id="subject" name="subject" required placeholder=" " style="width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 0.95rem; outline: none;">
+                            <option value="">Select a Topic</option>
+                            <option value="ai-recommendations">AI Crop Recommendations</option>
+                            <option value="community">Community Connection</option>
+                            <option value="data-contribution">Data Contribution</option>
+                            <option value="technical-support">Technical Support</option>
+                            <option value="partnership">Partnership Opportunities</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <textarea id="message" name="message" required placeholder=" "></textarea>
@@ -443,50 +451,51 @@
             
             <div class="contact-info">
                 <div class="info-card">
-                    <ion-icon name="location-outline"></ion-icon>
+                    <ion-icon name="mail-outline"></ion-icon>
                     <div class="info-card-content">
-                        <h3>Our Location</h3>
-                        <p>123 College Street, Campus Area</p>
-                        <p>Hyderabad, Telangana 500032</p>
+                        <h3>Email</h3>
+                        <p>support@growsmart.ai</p>
+                        <p>data@growsmart.ai (for data contributions)</p>
                     </div>
                 </div>
                 <div class="info-card">
                     <ion-icon name="call-outline"></ion-icon>
                     <div class="info-card-content">
-                        <h3>Call Us</h3>
-                        <p>+91 9876543210</p>
-                        <p>Monday to Saturday, 9am to 7pm</p>
+                        <h3>Phone</h3>
+                        <p>+1 (555) 123-4567</p>
+                        <p>Available Mon-Fri, 9am-5pm EST</p>
                     </div>
                 </div>
                 <div class="info-card">
-                    <ion-icon name="mail-outline"></ion-icon>
+                    <ion-icon name="location-outline"></ion-icon>
                     <div class="info-card-content">
-                        <h3>Email Us</h3>
-                        <p>info@tmatsxerox.com</p>
-                        <p>support@tmatsxerox.com</p>
+                        <h3>Headquarters</h3>
+                        <p>123 Innovation Way,</p>
+                        <p>Sustainable Tech Park,</p>
+                        <p>Boston, MA 02108</p>
                     </div>
                 </div>
-                
+                <div class="info-card">
+                    <ion-icon name="people-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Community Support</h3>
+                        <p>Join our weekly virtual office hours</p>
+                        <p>Every Wednesday, 4pm-6pm EST</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <ion-icon name="globe-outline"></ion-icon>
+                    <div class="info-card-content">
+                        <h3>Data Contribution</h3>
+                        <p>Share your growing results to improve our AI</p>
+                        <p>Visit data.growsmart.ai</p>
+                    </div>
+                </div>
                 <div class="map-container">
                     <div class="map-placeholder">
-                        <ion-icon name="map-outline"></ion-icon>
-                        <p>TMATS Xerox Location</p>
-                        <p>Near College Campus, Central Area</p>
-                    </div>
-                    <!-- Map iframe would go here in production -->
-                </div>
-                
-                <div class="info-card">
-                    <ion-icon name="share-social-outline"></ion-icon>
-                    <div class="info-card-content">
-                        <h3>Follow Us</h3>
-                        <p>Stay connected with us on social media</p>
-                        <div class="social-links">
-                            <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
-                            <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
-                            <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
-                            <a href="#"><ion-icon name="logo-whatsapp"></ion-icon></a>
-                        </div>
+                        <ion-icon name="map-outline" style="font-size: 3rem; margin-bottom: 10px;"></ion-icon>
+                        <p>Interactive Map Coming Soon</p>
+                        <p>Showing urban farm locations in your area</p>
                     </div>
                 </div>
             </div>

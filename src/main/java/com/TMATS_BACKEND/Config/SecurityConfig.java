@@ -16,10 +16,11 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity (Enable in production)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/Contact","/Services","/About","/Home", "/Register", "/Login", 
+                .requestMatchers("/Contact","/Products","/Services","/About","/Home", "/Register", "/Login", 
                                 "/forgot-password", "/reset-password", "/forgot-password-submit", "/api/auth/forgot-password", "/api/auth/reset-password",
-                                "/css/**", "/js/**", "/images/**","/favicon.png**","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard",
-                                "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists").permitAll()
+                                "/css/**", "/js/**", "/images/**", "/static/**", 
+                                "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard",
+                                "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community").permitAll()
                 .requestMatchers("/Admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated() // Protect all other routes
             )

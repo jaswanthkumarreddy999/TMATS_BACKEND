@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Farm - Community</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        .community-content {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 80px 20px 20px;
+        }
+        
+        .community-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            max-height: 700px;
+        }
+        
+        .community-info {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            background: rgba(22, 41, 56, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .community-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 2px solid #0091ff;
+            padding-bottom: 10px;
+        }
+        
+        .community-info p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .events-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .events-section h3 {
+            color: #0091ff;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 0.9rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        
+        .event-date {
+            background: rgba(0, 145, 255, 0.2);
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+            margin-left: 10px;
+        }
+        
+        .event-details {
+            flex: 1;
+            padding-right: 10px;
+        }
+        
+        .event-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .event-description {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .community-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, auto);
+            gap: 15px;
+            overflow: hidden;
+        }
+        
+        .community-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .community-card ion-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #0091ff;
+        }
+        
+        .community-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .community-card p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+        
+        .volunteer-box {
+            grid-column: span 2;
+            background: rgba(0, 145, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .volunteer-box h4 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .community-btn {
+            display: inline-block;
+            background: #24699d;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .community-btn:hover {
+            background: #1c5580;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .community-container {
+                gap: 15px;
+            }
+            
+            .community-info h1 {
+                font-size: 2rem;
+            }
+            
+            .community-info p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .community-container {
+                grid-template-columns: 1fr;
+                max-height: none;
+                height: auto;
+            }
+            
+            .community-info {
+                padding: 15px;
+            }
+            
+            .community-content {
+                align-items: flex-start;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 50px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            
+            .community-grid {
+                margin-top: 15px;
+            }
+            
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                background-position: 30% center; /* Adjust background position for smaller screens */
+            }
+            
+            .community-info h1 {
+                font-size: 1.7rem;
+            }
+            
+            .community-card {
+                padding: 10px;
+            }
+            
+            .community-card h3 {
+                font-size: 1rem;
+            }
+            
+            .community-card p {
+                font-size: 0.8rem;
+            }
+            
+            .volunteer-box h4 {
+                font-size: 0.95rem;
+            }
+            
+            .event-item {
+                flex-direction: column;
+            }
+            
+            .event-date {
+                align-self: flex-start;
+                margin: 5px 0 0 0;
+            }
+        }
+        
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 15px 0 0;
+                width: 100%;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 20px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">GrowSmart</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
+            <a th:href="@{/Home}">Home</a>
+            <a th:href="@{/About}">About Us</a>
+            <a th:href="@{/Products}">Our Produce</a>
+            <a th:href="@{/Community}">Community</a>
+            <a th:href="@{/Contact}">Contact</a>
+            <button class="btnlogin-popup">Login</button>
+        </nav>
+    </header>
+    
+    <!-- Community Page Content -->
+    <div class="community-content">
+        <div class="community-container">
+            <div class="community-info">
+                <h1>Urban Farming Network</h1>
+                <p>Connect with fellow urban farmers, exchange knowledge, and participate in our collaborative ecosystem. Our platform uses AI to match you with gardeners facing similar challenges and opportunities, creating a supportive community focused on sustainable food production in urban environments.</p>
+                
+                <div class="events-section">
+                    <h3>Upcoming Knowledge Sharing Events</h3>
+                    <div class="event-item">
+                        <div class="event-details">
+                            <div class="event-title">Space Optimization Workshop</div>
+                            <div class="event-description">Learn AI-driven techniques to maximize yield in limited urban spaces.</div>
+                        </div>
+                        <div class="event-date">June 15</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-details">
+                            <div class="event-title">Community Data Sharing Session</div>
+                            <div class="event-description">Contribute to our growing database of urban farming success stories.</div>
+                        </div>
+                        <div class="event-date">June 22</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-details">
+                            <div class="event-title">AI Crop Planning Masterclass</div>
+                            <div class="event-description">Harness machine learning to optimize your seasonal planting calendar.</div>
+                        </div>
+                        <div class="event-date">July 8</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-details">
+                            <div class="event-title">Resource Efficiency Hackathon</div>
+                            <div class="event-description">Collaborative problem-solving for water and energy conservation in urban farms.</div>
+                        </div>
+                        <div class="event-date">July 29</div>
+                    </div>
+                </div>
+                
+                <button class="community-btn btnlogin-popup">Find Your Farming Network</button>
+            </div>
+            
+            <div class="community-grid">
+                <div class="community-card">
+                    <ion-icon name="people-outline"></ion-icon>
+                    <h3>Neighborhood Groups</h3>
+                    <p>Connect with urban farmers in your local area</p>
+                </div>
+                <div class="community-card">
+                    <ion-icon name="stats-chart-outline"></ion-icon>
+                    <h3>Data Sharing</h3>
+                    <p>Contribute to and benefit from community insights</p>
+                </div>
+                <div class="community-card">
+                    <ion-icon name="school-outline"></ion-icon>
+                    <h3>Expert Mentoring</h3>
+                    <p>AI-matched guidance from experienced growers</p>
+                </div>
+                <div class="community-card">
+                    <ion-icon name="chatbubbles-outline"></ion-icon>
+                    <h3>Problem Solving Forums</h3>
+                    <p>Get help with specific urban farming challenges</p>
+                </div>
+                <div class="community-card">
+                    <ion-icon name="ribbon-outline"></ion-icon>
+                    <h3>Success Stories</h3>
+                    <p>Learn from real urban farming transformations</p>
+                </div>
+                <div class="community-card">
+                    <ion-icon name="map-outline"></ion-icon>
+                    <h3>Resource Mapping</h3>
+                    <p>Find and share local farming resources</p>
+                </div>
+                <div class="volunteer-box">
+                    <h4>Join our data collective to improve our AI recommendations and help optimize urban farming worldwide!</h4>
+                    <button class="community-btn btnlogin-popup">Contribute Your Results</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+
+        <!-- Login Form -->
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form th:action="@{/Login}" method="post" th:object=${LoginDTO}>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                    <input type="email" th:field="*{email}" name="email" th required placeholder=" ">
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                    <input id="login-password" type="password" th:field="*{password}" name="password" required placeholder=" ">
+                    <label>Password</label>
+                </div>
+                <div class="remember-forget">
+                    <label><input type="checkbox">Remember me</label>
+                    <a th:href="@{/forgot-password}">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <div class="login-register">
+                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form-box register">
+            <h2>Registration</h2>
+            <form th:action="@{/Register}" method="post" th:object=${RegisterDTO}>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
+                    <input type="text" th:field="*{username}" name="username" required placeholder=" ">
+                    <label>Username</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                    <input type="email" th:field="*{email}" name="email" required placeholder=" ">
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                    <input id="register-password"type="password" th:field="*{password}" name="password" required placeholder=" ">
+                    <label>Password</label>
+                </div>
+                <div class="remember-forget">
+                    <label><input type="checkbox" required> I agree to the terms & conditions</label>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+            <div class="login-register">
+                <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script> 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
