@@ -63,6 +63,7 @@
         
         .form-group {
             position: relative;
+            margin-bottom: 9px;
         }
         
         .form-group input, 
@@ -394,6 +395,33 @@
                 padding: 20px 30px;
             }
         }
+        
+        /* Select styling */
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(22, 41, 56, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group select:focus {
+            border-color: #0091ff;
+            background: rgba(22, 41, 56, 0.9);
+        }
+        
+        .form-group select option {
+            background: rgba(22, 41, 56, 0.95);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -431,7 +459,7 @@
                         <label for="email">Email Address</label>
                     </div>
                     <div class="form-group">
-                        <select id="subject" name="subject" required placeholder=" " style="width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: white; font-size: 0.95rem; outline: none;">
+                        <select id="subject" name="subject" required placeholder=" ">
                             <option value="">Select a Topic</option>
                             <option value="ai-recommendations">AI Crop Recommendations</option>
                             <option value="community">Community Connection</option>
