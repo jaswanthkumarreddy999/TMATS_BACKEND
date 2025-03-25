@@ -59,6 +59,11 @@ public class CustomUrlFilter implements Filter {
             path.equals("/logout") || 
             path.equals("/Dashboard") || 
             path.equals("/Admin/Dashboard") || 
+            path.equals("/admin/dashboard") ||
+            path.equals("/admin/users") ||
+            path.equals("/admin/data") ||
+            path.equals("/admin/crops") ||
+            path.equals("/debug-session") ||
             path.startsWith("/verify-otp") || 
             path.startsWith("/api/") || 
             path.equals("/error") || 
@@ -67,7 +72,8 @@ public class CustomUrlFilter implements Filter {
             path.equals("/UserNotFound") || 
             path.equals("/Wrongpassword") || 
             path.equals("/UserNotVerified") || 
-            path.equals("/user-exists")) {
+            path.equals("/user-exists") ||
+            path.equals("/Community")) {
             System.out.println("Continuing normal processing for known path: " + path);
             chain.doFilter(request, response);
             return;
@@ -98,7 +104,7 @@ public class CustomUrlFilter implements Filter {
                         System.out.println("Role is Role enum instance");
                         if (role == Role.ADMIN) {
                             System.out.println("REDIRECTING TO ADMIN DASHBOARD from filter");
-                            httpResponse.sendRedirect("/Admin/Dashboard");
+                            httpResponse.sendRedirect("/admin/dashboard");
                             return;
                         }
                     }
@@ -108,7 +114,7 @@ public class CustomUrlFilter implements Filter {
                     
                     if (roleStr.equals("ADMIN")) {
                         System.out.println("REDIRECTING TO ADMIN DASHBOARD from filter (string match)");
-                        httpResponse.sendRedirect("/Admin/Dashboard");
+                        httpResponse.sendRedirect("/admin/dashboard");
                         return;
                     }
                 }
