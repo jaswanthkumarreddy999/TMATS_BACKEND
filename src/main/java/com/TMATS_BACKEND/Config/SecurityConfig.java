@@ -20,9 +20,11 @@ public class SecurityConfig {
                                 "/forgot-password", "/reset-password", "/forgot-password-submit", "/api/auth/forgot-password", "/api/auth/reset-password",
                                 "/css/**", "/js/**", "/images/**", "/static/**", "/fonts/**", "/favicon.ico",
                                 "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard","/admin/dashboard",
+                                "/Admin/users", "/admin/users", "/Admin/data", "/admin/data", "/Admin/crops", "/admin/crops",
                                 "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community",
-                                "/debug-session").permitAll()
-                .requestMatchers("/Admin/**", "/admin/**").hasAuthority("ADMIN")
+                                "/debug-session", "/test/**").permitAll()
+                // Comment out the admin-specific authorization to make all admin pages public
+                // .requestMatchers("/Admin/**", "/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated() // Protect all other routes
             )
             .formLogin(form -> form

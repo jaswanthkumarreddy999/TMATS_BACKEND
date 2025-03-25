@@ -63,7 +63,11 @@ public class CustomUrlFilter implements Filter {
             path.equals("/admin/users") ||
             path.equals("/admin/data") ||
             path.equals("/admin/crops") ||
+            path.equals("/Admin/users") ||
+            path.equals("/Admin/data") ||
+            path.equals("/Admin/crops") ||
             path.equals("/debug-session") ||
+            path.startsWith("/test/") ||
             path.startsWith("/verify-otp") || 
             path.startsWith("/api/") || 
             path.equals("/error") || 
@@ -96,6 +100,8 @@ public class CustomUrlFilter implements Filter {
                 System.out.println("User: " + session.getAttribute("user"));
                 System.out.println("Role: " + role);
                 
+                // Disable admin URL redirection since admin pages are now public
+                /*
                 // Check if user is admin
                 if (role != null) {
                     System.out.println("Role class: " + role.getClass().getName());
@@ -118,6 +124,7 @@ public class CustomUrlFilter implements Filter {
                         return;
                     }
                 }
+                */
                 
                 // Not admin, redirect to user dashboard
                 System.out.println("REDIRECTING TO USER DASHBOARD from filter");
