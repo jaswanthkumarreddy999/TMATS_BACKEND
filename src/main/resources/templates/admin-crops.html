@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Management - GrowSmart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        body {
+            display: block;
+            padding-top: 100px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .welcome-section h1 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .crops-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .crop-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .crop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .crop-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 145, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .crop-icon ion-icon {
+            font-size: 2em;
+            color: #0091ff;
+        }
+        .crop-name {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .crop-category {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        .crop-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .crop-stat {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0091ff;
+        }
+        .stat-label {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .crop-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+        .btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #24699d;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0091ff;
+        }
+        .btn-danger {
+            background: #99334d;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc0033;
+        }
+        .btn-add {
+            background: #45a049;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+        .btn-add:hover {
+            background: #2e7d32;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .filter-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .crop-details-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        .crop-details-section h2 {
+            color: white;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        .crop-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+        }
+        .crop-image {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .crop-image span {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .crop-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .info-item {
+            margin-bottom: 15px;
+        }
+        .info-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 1.1em;
+        }
+        .care-instructions {
+            grid-column: span 2;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 0;
+                width: 100%;
+                font-size: 1.1rem;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+            
+            .crop-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Admin navbar styles */
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation .logout-link {
+            margin-left: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link:hover {
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link form {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navigation .btnlogin-popup {
+            width: 130px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #fff;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            transition: .5s;
+        }
+        
+        .navigation .btnlogin-popup:hover {
+            background: #45a049;
+            color: #fff;
+            border-color: #45a049;
+        }
+        
+        /* Update responsive styles */
+        @media (max-width: 992px) {
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form,
+            .navigation .btnlogin-popup {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">GrowSmart</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
+            <a th:href="@{/Admin/Dashboard}">Dashboard</a>
+            <a th:href="@{/Admin/users}">Manage Users</a>
+            <a th:href="@{/Admin/data}">AI Training Data</a>
+            <a th:href="@{/Admin/crops}" class="active">Crop Management</a>
+            <a href="#" class="logout-link">
+                <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+                    <button type="submit" class="btnlogin-popup">Logout</button>
+                </form>
+            </a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>Crop Management</h1>
+            <p>Manage the crop database, update growing parameters, and configure AI recommendations for all plants in the GrowSmart system.</p>
+        </div>
+        
+        <div class="filters">
+            <input type="text" class="filter-input" placeholder="Search crops...">
+            <select class="filter-input">
+                <option value="">All Categories</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="fruits">Fruits</option>
+                <option value="herbs">Herbs</option>
+                <option value="flowers">Flowers</option>
+            </select>
+            <select class="filter-input">
+                <option value="">All Difficulties</option>
+                <option value="beginner">Beginner Friendly</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+            <button class="btn btn-primary">Apply Filters</button>
+        </div>
+        
+        <a href="#" class="btn btn-add">+ Add New Crop</a>
+
+        <div class="crops-grid">
+            <!-- Crop 1 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Tomatoes (Roma)</div>
+                <div class="crop-category">Vegetables</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">3.2kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">94%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Medium</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+            
+            <!-- Crop 2 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Lettuce (Butterhead)</div>
+                <div class="crop-category">Vegetables</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">0.5kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Easy</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+            
+            <!-- Crop 3 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Basil (Sweet)</div>
+                <div class="crop-category">Herbs</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">0.3kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">96%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Easy</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+            
+            <!-- Crop 4 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Strawberries</div>
+                <div class="crop-category">Fruits</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">60</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">1.4kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Medium</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+            
+            <!-- Crop 5 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Peppers (Bell)</div>
+                <div class="crop-category">Vegetables</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">70</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">2.1kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">88%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Medium</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+            
+            <!-- Crop 6 -->
+            <div class="crop-card">
+                <div class="crop-icon">
+                    <ion-icon name="leaf-outline"></ion-icon>
+                </div>
+                <div class="crop-name">Spinach</div>
+                <div class="crop-category">Vegetables</div>
+                <div class="crop-stats">
+                    <div class="crop-stat">
+                        <div class="stat-value">30</div>
+                        <div class="stat-label">Growth Days</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">0.7kg</div>
+                        <div class="stat-label">Avg. Yield</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="crop-stat">
+                        <div class="stat-value">Easy</div>
+                        <div class="stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="crop-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="crop-details-section">
+            <h2>Selected Crop Details: Tomatoes (Roma)</h2>
+            
+            <div class="crop-details-grid">
+                <div class="crop-image">
+                    <span>Crop Image Placeholder</span>
+                </div>
+                
+                <div class="crop-info">
+                    <div class="info-item">
+                        <div class="info-label">Scientific Name</div>
+                        <div class="info-value">Solanum lycopersicum</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Crop Family</div>
+                        <div class="info-value">Solanaceae (Nightshade)</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Growth Cycle</div>
+                        <div class="info-value">Annual</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Sun Requirement</div>
+                        <div class="info-value">Full Sun (6-8 hours)</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Water Needs</div>
+                        <div class="info-value">Medium (1-2 inches/week)</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Soil pH</div>
+                        <div class="info-value">6.0 - 6.8</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Germination</div>
+                        <div class="info-value">5-10 days</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Spacing</div>
+                        <div class="info-value">18-24 inches</div>
+                    </div>
+                    
+                    <div class="care-instructions">
+                        <h3>Growing Instructions</h3>
+                        <p>Roma tomatoes thrive in warm conditions with good air circulation. Plant deeply in well-drained soil after danger of frost has passed. Stake or cage plants to support growth. Water at the base to prevent leaf diseases. Apply balanced fertilizer every 2-3 weeks. Harvest when fruits are firm and fully red.</p>
+                        
+                        <h3>Common Issues</h3>
+                        <p>Watch for blossom end rot (calcium deficiency), early blight, and aphids. Provide consistent water to prevent fruit splitting. Ensure adequate spacing to reduce disease spread.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn btn-primary">Edit Details</a>
+                <a href="#" class="btn btn-primary">Update Growing Parameters</a>
+                <a href="#" class="btn btn-primary">View Growth Data</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a:not(.logout-link)');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Handle logout form click - don't close menu until form submits
+        const logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+                // Only prevent default if it's a direct click on the link (not the button)
+                if (e.target === logoutLink) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 

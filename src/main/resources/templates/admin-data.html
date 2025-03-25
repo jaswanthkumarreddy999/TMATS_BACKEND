@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Training Data - GrowSmart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        body {
+            display: block;
+            padding-top: 100px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .welcome-section h1 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0091ff;
+        }
+        .stat-label {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .data-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        .data-section h2 {
+            color: white;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .data-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .data-card h3 {
+            margin-top: 0;
+            color: #0091ff;
+        }
+        .data-card p {
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .data-card .meta {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: auto;
+        }
+        .data-table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+        }
+        .data-table th, 
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .data-table th {
+            background-color: rgba(0, 145, 255, 0.2);
+            font-weight: bold;
+        }
+        .data-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            transition: background 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #24699d;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0091ff;
+        }
+        .btn-success {
+            background: #45a049;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #2e7d32;
+        }
+        .btn-danger {
+            background: #99334d;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc0033;
+        }
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
+            position: relative;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .filter-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 0;
+                width: 100%;
+                font-size: 1.1rem;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+        }
+        /* Admin navbar styles */
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation .logout-link {
+            margin-left: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link:hover {
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link form {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navigation .btnlogin-popup {
+            width: 130px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #fff;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            transition: .5s;
+        }
+        
+        .navigation .btnlogin-popup:hover {
+            background: #45a049;
+            color: #fff;
+            border-color: #45a049;
+        }
+        
+        /* Update responsive styles */
+        @media (max-width: 992px) {
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form,
+            .navigation .btnlogin-popup {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">GrowSmart</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
+            <a th:href="@{/Admin/Dashboard}">Dashboard</a>
+            <a th:href="@{/Admin/users}">Manage Users</a>
+            <a th:href="@{/Admin/data}" class="active">AI Training Data</a>
+            <a th:href="@{/Admin/crops}">Crop Management</a>
+            <a href="#" class="logout-link">
+                <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+                    <button type="submit" class="btnlogin-popup">Logout</button>
+                </form>
+            </a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>AI Training Data</h1>
+            <p>Manage and monitor all data used to train the GrowSmart AI recommendation engine. Review user submissions, validate data quality, and monitor performance metrics.</p>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">45,672</div>
+                <div class="stat-label">Total Data Points</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">532</div>
+                <div class="stat-label">New Points (This Week)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">97.3%</div>
+                <div class="stat-label">Data Quality Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">92.8%</div>
+                <div class="stat-label">Prediction Accuracy</div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>AI Performance Analytics</h2>
+            <div class="filters">
+                <select class="filter-input">
+                    <option value="all">All Crop Types</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="herbs">Herbs</option>
+                </select>
+                <select class="filter-input">
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                    <option value="365">Last Year</option>
+                </select>
+                <button class="btn btn-primary">Apply Filters</button>
+            </div>
+            <div class="chart-container">
+                <!-- This would be replaced with an actual chart library like Chart.js -->
+                <div style="width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,145,255,0.2) 0%, rgba(0,0,0,0) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: rgba(255,255,255,0.6);">AI Performance Trend Chart</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>Recent Data Submissions</h2>
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Crop Type</th>
+                            <th>Environment</th>
+                            <th>Growth Metrics</th>
+                            <th>Submitted By</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>DS-2451</td>
+                            <td>Tomatoes (Roma)</td>
+                            <td>Indoor Hydroponic</td>
+                            <td>Growth: 24cm, Yield: 3.2kg</td>
+                            <td>John Smith</td>
+                            <td>Verified</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DS-2450</td>
+                            <td>Basil (Sweet)</td>
+                            <td>Balcony Container</td>
+                            <td>Growth: 18cm, Yield: 0.8kg</td>
+                            <td>Sara Johnson</td>
+                            <td>Pending</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DS-2449</td>
+                            <td>Lettuce (Butterhead)</td>
+                            <td>Vertical Farm</td>
+                            <td>Growth: 15cm, Yield: 0.5kg</td>
+                            <td>Michael Wong</td>
+                            <td>Verified</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DS-2448</td>
+                            <td>Strawberries</td>
+                            <td>Rooftop Garden</td>
+                            <td>Growth: 12cm, Yield: 1.4kg</td>
+                            <td>Emma Davis</td>
+                            <td>Needs Review</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DS-2447</td>
+                            <td>Peppers (Bell)</td>
+                            <td>Indoor LED</td>
+                            <td>Growth: 45cm, Yield: 2.1kg</td>
+                            <td>Robert Chen</td>
+                            <td>Verified</td>
+                            <td>
+                                <a href="#" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn btn-primary">View All Data</a>
+                <a href="#" class="btn btn-success">Download Dataset</a>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>Data Quality Analysis</h2>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <h3>Data Gaps</h3>
+                    <p>Currently missing significant data for:</p>
+                    <ul>
+                        <li>Root vegetables in vertical systems</li>
+                        <li>Winter growing in zone 8b</li>
+                        <li>Aquaponic pH regulation effects</li>
+                    </ul>
+                    <div class="meta">Updated 2 days ago</div>
+                </div>
+                
+                <div class="data-card">
+                    <h3>Anomaly Detection</h3>
+                    <p>3 potential data anomalies detected in the last 7 days:</p>
+                    <ul>
+                        <li>Unusual growth rates for hydroponic tomatoes</li>
+                        <li>Inconsistent nutrient absorption data</li>
+                        <li>Outlier yield reports from Zone 6a</li>
+                    </ul>
+                    <div class="meta">Last scan: Yesterday, 15:42</div>
+                </div>
+                
+                <div class="data-card">
+                    <h3>Model Confidence</h3>
+                    <p>High confidence (>95%) for:</p>
+                    <ul>
+                        <li>Leafy greens in all environments</li>
+                        <li>Tomato varieties in hydroponic systems</li>
+                        <li>Herb growth in urban containers</li>
+                    </ul>
+                    <p>Low confidence (&lt;80%) for:</p>
+                    <ul>
+                        <li>Fruit trees in rooftop environments</li>
+                        <li>Root vegetables in vertical systems</li>
+                    </ul>
+                    <div class="meta">Updated weekly - Last: Monday, 09:00</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn btn-primary">Run Data Integrity Check</a>
+                <a href="#" class="btn btn-danger">Flag Problematic Data</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a:not(.logout-link)');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Handle logout form click - don't close menu until form submits
+        const logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+                // Only prevent default if it's a direct click on the link (not the button)
+                if (e.target === logoutLink) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
