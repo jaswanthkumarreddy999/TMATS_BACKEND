@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Crops - GrowSmart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        body {
+            display: block;
+            padding-top: 100px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .welcome-section h1 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .content-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+        }
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            transition: background 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #24699d;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0091ff;
+        }
+        .btn-success {
+            background: #45a049;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #2e7d32;
+        }
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #d35400;
+        }
+        .btn-danger {
+            background: #99334d;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc0033;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .crop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .crop-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .crop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .crop-image {
+            height: 180px;
+            width: 100%;
+            background-color: #24699d;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .crop-details {
+            padding: 15px;
+        }
+        .crop-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .crop-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .crop-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-bottom: 15px;
+        }
+        .status-growing {
+            background: rgba(0, 200, 83, 0.2);
+            color: #00c853;
+            border: 1px solid rgba(0, 200, 83, 0.3);
+        }
+        .status-harvested {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        .status-planned {
+            background: rgba(3, 169, 244, 0.2);
+            color: #03a9f4;
+            border: 1px solid rgba(3, 169, 244, 0.3);
+        }
+        .crop-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .crop-actions .btn {
+            padding: 6px 12px;
+            font-size: 0.9em;
+            flex: 1;
+            text-align: center;
+        }
+        .progress-container {
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #0091ff, #00c853);
+        }
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .search-filter input, .search-filter select {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+        }
+        .search-filter input:focus, .search-filter select:focus {
+            outline: none;
+            border-color: #0091ff;
+        }
+        .new-crop-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .new-crop-form {
+                grid-template-columns: 1fr;
+            }
+            .crop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #0091ff;
+        }
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 0;
+                width: 100%;
+                font-size: 1.1rem;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+        }
+        /* navbar styles */
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation .logout-link {
+            margin-left: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link:hover {
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link form {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navigation .btnlogin-popup {
+            width: 130px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #fff;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            transition: .5s;
+        }
+        
+        .navigation .btnlogin-popup:hover {
+            background: #45a049;
+            color: #fff;
+            border-color: #45a049;
+        }
+        
+        /* Update responsive styles */
+        @media (max-width: 992px) {
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form,
+            .navigation .btnlogin-popup {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">GrowSmart</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
+            <a th:href="@{/Dashboard}">Dashboard</a>
+            <a th:href="@{/user/profile}">My Profile</a>
+            <a th:href="@{/user/crops}" class="active">My Crops</a>
+            <a th:href="@{/user/analytics}">Analytics</a>
+            <a th:href="@{/Community}">Community</a>
+            <a href="#" class="logout-link">
+                <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+                    <button type="submit" class="btnlogin-popup">Logout</button>
+                </form>
+            </a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>My Crops</h1>
+            <p>Manage your crops, track their growth, and monitor their health with AI-assisted insights.</p>
+        </div>
+        
+        <div class="content-section">
+            <div class="section-title">
+                Add New Crop
+                <button class="btn btn-primary" id="toggleFormBtn">+ Add Crop</button>
+            </div>
+            
+            <div id="newCropForm" style="display: none;">
+                <form class="new-crop-form">
+                    <div class="form-group">
+                        <label for="cropName">Crop Name</label>
+                        <input type="text" id="cropName" class="form-control" placeholder="e.g., Tomatoes">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cropVariety">Variety</label>
+                        <input type="text" id="cropVariety" class="form-control" placeholder="e.g., Cherry Tomato">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cropLocation">Growing Location</label>
+                        <select id="cropLocation" class="form-control">
+                            <option value="">Select Location</option>
+                            <option value="backyard">Backyard</option>
+                            <option value="frontyard">Front Yard</option>
+                            <option value="balcony">Balcony</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="greenhouse">Greenhouse</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cropStatus">Status</label>
+                        <select id="cropStatus" class="form-control">
+                            <option value="">Select Status</option>
+                            <option value="planned">Planned</option>
+                            <option value="growing">Growing</option>
+                            <option value="harvested">Harvested</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="plantDate">Planting Date</label>
+                        <input type="date" id="plantDate" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="harvestDate">Expected Harvest Date</label>
+                        <input type="date" id="harvestDate" class="form-control">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="cropNotes">Notes</label>
+                        <textarea id="cropNotes" class="form-control" rows="3" placeholder="Add any notes about your crop..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions" style="grid-column: span 2;">
+                        <button type="button" class="btn btn-danger" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save Crop</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <div class="section-title">My Crops</div>
+            
+            <div class="search-filter">
+                <input type="text" placeholder="Search crops..." class="form-control">
+                <select class="form-control">
+                    <option value="">Filter by Status</option>
+                    <option value="planned">Planned</option>
+                    <option value="growing">Growing</option>
+                    <option value="harvested">Harvested</option>
+                </select>
+                <select class="form-control">
+                    <option value="">Sort by</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="date-newest">Newest First</option>
+                    <option value="date-oldest">Oldest First</option>
+                </select>
+            </div>
+            
+            <div class="crop-grid">
+                <!-- Crop Card 1 -->
+                <div class="crop-card">
+                    <div class="crop-image" style="background-image: url('https://www.eatingwell.com/thmb/nVwkTHYYRrfWJFRwlkGcDKI0OWo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-grow-tomatoes-5c6c0b71c2a5497883d27e15ed83025a.jpg');"></div>
+                    <div class="crop-details">
+                        <div class="crop-name">Tomatoes</div>
+                        <div class="crop-info">
+                            <span>Cherry Variety</span>
+                            <span>Backyard</span>
+                        </div>
+                        <span class="crop-status status-growing">Growing</span>
+                        
+                        <div class="progress-container" title="Growth progress: 65%">
+                            <div class="progress-bar" style="width: 65%;"></div>
+                        </div>
+                        
+                        <div class="crop-info">
+                            <span>Planted: May 10, 2023</span>
+                            <span>Harvest: July 25, 2023</span>
+                        </div>
+                        
+                        <div class="crop-actions">
+                            <a href="#" class="btn btn-primary">Details</a>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Crop Card 2 -->
+                <div class="crop-card">
+                    <div class="crop-image" style="background-image: url('https://www.eatingwell.com/thmb/qkVoYQeO1z0L7IyZaA5u70TKcqs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/gardeners-hand-planting-basil-seedlings-in-raised-garden-bed-filled-with-rich-garden-soil-gettyimages-1353938141-2000-5f3eb3a147b24db78627b94a81d5a06b.jpg');"></div>
+                    <div class="crop-details">
+                        <div class="crop-name">Sweet Basil</div>
+                        <div class="crop-info">
+                            <span>Italian Variety</span>
+                            <span>Balcony Pot</span>
+                        </div>
+                        <span class="crop-status status-growing">Growing</span>
+                        
+                        <div class="progress-container" title="Growth progress: 85%">
+                            <div class="progress-bar" style="width: 85%;"></div>
+                        </div>
+                        
+                        <div class="crop-info">
+                            <span>Planted: April 5, 2023</span>
+                            <span>Harvest: Ongoing</span>
+                        </div>
+                        
+                        <div class="crop-actions">
+                            <a href="#" class="btn btn-primary">Details</a>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Crop Card 3 -->
+                <div class="crop-card">
+                    <div class="crop-image" style="background-image: url('https://www.gardeners.com/globalassets/articles/gardening/hero_thumbnail/corn_rows_harvesting.jpg');"></div>
+                    <div class="crop-details">
+                        <div class="crop-name">Sweet Corn</div>
+                        <div class="crop-info">
+                            <span>Golden Bantam</span>
+                            <span>Backyard</span>
+                        </div>
+                        <span class="crop-status status-harvested">Harvested</span>
+                        
+                        <div class="progress-container" title="Growth progress: 100%">
+                            <div class="progress-bar" style="width: 100%;"></div>
+                        </div>
+                        
+                        <div class="crop-info">
+                            <span>Planted: March 15, 2023</span>
+                            <span>Harvested: June 30, 2023</span>
+                        </div>
+                        
+                        <div class="crop-actions">
+                            <a href="#" class="btn btn-primary">Details</a>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Crop Card 4 -->
+                <div class="crop-card">
+                    <div class="crop-image" style="background-image: url('https://img.freepik.com/premium-photo/gardening-spring-gardening-concept-garden-tools-seedling_73944-26031.jpg');"></div>
+                    <div class="crop-details">
+                        <div class="crop-name">Bell Peppers</div>
+                        <div class="crop-info">
+                            <span>Rainbow Mix</span>
+                            <span>Greenhouse</span>
+                        </div>
+                        <span class="crop-status status-planned">Planned</span>
+                        
+                        <div class="progress-container" title="Growth progress: 0%">
+                            <div class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                        
+                        <div class="crop-info">
+                            <span>Planned: Aug 1, 2023</span>
+                            <span>Harvest: Oct 15, 2023</span>
+                        </div>
+                        
+                        <div class="crop-actions">
+                            <a href="#" class="btn btn-primary">Details</a>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a:not(.logout-link)');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Handle logout form click - don't close menu until form submits
+        const logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+                // Only prevent default if it's a direct click on the link (not the button)
+                if (e.target === logoutLink) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+        
+        // Toggle new crop form
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
+        const newCropForm = document.getElementById('newCropForm');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        toggleFormBtn.addEventListener('click', () => {
+            newCropForm.style.display = 'block';
+            toggleFormBtn.style.display = 'none';
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            newCropForm.style.display = 'none';
+            toggleFormBtn.style.display = 'inline-block';
+        });
+    </script>
+</body>
+</html> 

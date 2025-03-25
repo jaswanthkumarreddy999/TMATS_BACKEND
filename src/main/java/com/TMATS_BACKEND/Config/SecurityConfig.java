@@ -26,6 +26,7 @@ public class SecurityConfig {
                                  "/Admin/users", "/admin/users", 
                                  "/Admin/data", "/admin/data", 
                                  "/Admin/crops", "/admin/crops").permitAll()
+                .requestMatchers("/user/profile", "/user/crops", "/user/analytics").authenticated()
                 .anyRequest().authenticated() // Protect all other routes
             )
             .formLogin(form -> form

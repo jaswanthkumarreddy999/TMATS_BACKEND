@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - GrowSmart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <style>
+        body {
+            display: block;
+            padding-top: 100px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .welcome-section h1 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+        }
+        .profile-sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(0, 145, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-pic ion-icon {
+            font-size: 5em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .profile-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .profile-type {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        .profile-stats {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #0091ff;
+        }
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .content-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+        }
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #0091ff;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            transition: background 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #24699d;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0091ff;
+        }
+        .btn-success {
+            background: #45a049;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #2e7d32;
+        }
+        .btn-danger {
+            background: #99334d;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #cc0033;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        /* Hamburger Menu Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: rgba(22, 41, 56, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: right 0.3s ease;
+                z-index: 90;
+            }
+            
+            .navigation.active {
+                right: 0;
+            }
+            
+            .navigation a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .navigation .btnlogin-popup {
+                margin: 0;
+                width: 100%;
+                font-size: 1.1rem;
+            }
+            
+            /* Hamburger animation for active state */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+            
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* navbar styles */
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation .logout-link {
+            margin-left: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link:hover {
+            text-decoration: none !important;
+        }
+        
+        .navigation .logout-link form {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navigation .btnlogin-popup {
+            width: 130px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #fff;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            transition: .5s;
+        }
+        
+        .navigation .btnlogin-popup:hover {
+            background: #45a049;
+            color: #fff;
+            border-color: #45a049;
+        }
+        
+        /* Update responsive styles */
+        @media (max-width: 992px) {
+            .navigation .logout-link {
+                margin: 15px 0 0;
+                width: 100%;
+                display: block;
+            }
+            
+            .navigation .logout-link form,
+            .navigation .btnlogin-popup {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="logo">GrowSmart</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="navigation" id="navigation">
+            <a th:href="@{/Dashboard}">Dashboard</a>
+            <a th:href="@{/user/profile}" class="active">My Profile</a>
+            <a th:href="@{/user/crops}">My Crops</a>
+            <a th:href="@{/user/analytics}">Analytics</a>
+            <a th:href="@{/Community}">Community</a>
+            <a href="#" class="logout-link">
+                <form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+                    <button type="submit" class="btnlogin-popup">Logout</button>
+                </form>
+            </a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>My Profile</h1>
+            <p>View and update your personal information, manage your account settings, and see your farming statistics.</p>
+        </div>
+        
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="profile-pic">
+                    <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <div class="profile-name" th:text="${email != null ? email : 'John Smith'}">John Smith</div>
+                <div class="profile-type">Urban Farmer</div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">Upload New Photo</button>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Member Since</div>
+                        <div class="stat-value">May 2023</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Crops Grown</div>
+                        <div class="stat-value">12</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Harvests</div>
+                        <div class="stat-value">8</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Contribution Score</div>
+                        <div class="stat-value">87</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-content">
+                <div class="content-section">
+                    <div class="section-title">Personal Information</div>
+                    <form>
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" value="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" value="john.smith@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" value="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" class="form-control" value="New York, NY">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">Account Settings</div>
+                    <form>
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" class="form-control">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">Notification Preferences</div>
+                    <form>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for crop reminders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for community updates
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email notifications for AI recommendations
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Save Preferences</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">Account Actions</div>
+                    <div class="form-actions" style="justify-content: flex-start;">
+                        <button class="btn btn-danger">Delete My Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navigation = document.getElementById('navigation');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a navigation link
+        const navLinks = document.querySelectorAll('.navigation a:not(.logout-link)');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            });
+        });
+        
+        // Handle logout form click - don't close menu until form submits
+        const logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+                // Only prevent default if it's a direct click on the link (not the button)
+                if (e.target === logoutLink) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navigation.contains(e.target) && !menuToggle.contains(e.target) && navigation.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navigation.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 

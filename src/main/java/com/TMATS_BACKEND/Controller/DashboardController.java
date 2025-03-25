@@ -97,6 +97,49 @@ public class DashboardController {
         return "redirect:/admin/crops";
     }
     
+    // User dashboard pages - following the same pattern
+    @GetMapping("/user/profile")
+    public String userProfile(HttpSession session, Model model) {
+        System.out.println("User Profile page accessed");
+        // Check if user is logged in
+        if (session.getAttribute("user") == null) {
+            return "redirect:/Home";
+        }
+        
+        // Add user information to the model
+        model.addAttribute("email", session.getAttribute("user"));
+        
+        return "user-profile";
+    }
+    
+    @GetMapping("/user/crops")
+    public String userCrops(HttpSession session, Model model) {
+        System.out.println("User Crops page accessed");
+        // Check if user is logged in
+        if (session.getAttribute("user") == null) {
+            return "redirect:/Home";
+        }
+        
+        // Add user information to the model
+        model.addAttribute("email", session.getAttribute("user"));
+        
+        return "user-crops";
+    }
+    
+    @GetMapping("/user/analytics")
+    public String userAnalytics(HttpSession session, Model model) {
+        System.out.println("User Analytics page accessed");
+        // Check if user is logged in
+        if (session.getAttribute("user") == null) {
+            return "redirect:/Home";
+        }
+        
+        // Add user information to the model
+        model.addAttribute("email", session.getAttribute("user"));
+        
+        return "user-analytics";
+    }
+    
     // Debug endpoint to print session info
     @GetMapping("/debug-session")
     @ResponseBody
