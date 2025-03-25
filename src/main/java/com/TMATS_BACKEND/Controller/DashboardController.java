@@ -29,12 +29,12 @@ public class DashboardController {
         if (roleObj != null) {
             if (roleObj instanceof Role && roleObj == Role.ADMIN) {
                 System.out.println("Admin user accessing regular dashboard - redirecting to Admin Dashboard");
-                return "redirect:/Admin/Dashboard";
+                return "redirect:/admin/dashboard";
             }
             
             if (roleObj.toString().equals("ADMIN")) {
                 System.out.println("Admin user (string match) accessing regular dashboard - redirecting to Admin Dashboard");
-                return "redirect:/Admin/Dashboard";
+                return "redirect:/admin/dashboard";
             }
         }
         
@@ -46,7 +46,7 @@ public class DashboardController {
     
     @GetMapping("/Admin/Dashboard")
     public String greetadmin(HttpSession session, Model model) {
-        System.out.println("Admin Dashboard controller accessed");
+        System.out.println("Admin Dashboard controller accessed (uppercase)");
         // Check if user is logged in
         if (session.getAttribute("user") == null) {
             return "redirect:/Home";
@@ -80,56 +80,69 @@ public class DashboardController {
     // Updated lowercase admin dashboard route for consistency
     @GetMapping("/admin/dashboard")
     public String adminDashboard(HttpSession session, Model model) {
+        System.out.println("Admin Dashboard controller accessed (lowercase)");
         return greetadmin(session, model);
     }
     
     // New admin routes for users, data, and crops
     @GetMapping("/admin/users")
     public String adminUsers(HttpSession session, Model model) {
+        System.out.println("Admin Users controller accessed (lowercase)");
         if (!validateAdminAccess(session)) {
             return "redirect:/Dashboard";
         }
         
         model.addAttribute("email", session.getAttribute("user"));
+        System.out.println("Returning admin-users template");
         return "admin-users";
     }
     
     @GetMapping("/admin/data")
     public String adminData(HttpSession session, Model model) {
+        System.out.println("Admin Data controller accessed (lowercase)");
         if (!validateAdminAccess(session)) {
             return "redirect:/Dashboard";
         }
         
         model.addAttribute("email", session.getAttribute("user"));
+        System.out.println("Returning admin-data template");
         return "admin-data";
     }
     
     @GetMapping("/admin/crops")
     public String adminCrops(HttpSession session, Model model) {
+        System.out.println("Admin Crops controller accessed (lowercase)");
         if (!validateAdminAccess(session)) {
             return "redirect:/Dashboard";
         }
         
         model.addAttribute("email", session.getAttribute("user"));
+        System.out.println("Returning admin-crops template");
         return "admin-crops";
     }
     
     // Helper method to validate admin access
     private boolean validateAdminAccess(HttpSession session) {
         if (session.getAttribute("user") == null) {
+            System.out.println("Admin access validation failed: no user in session");
             return false;
         }
         
         Object roleObj = session.getAttribute("role");
+        System.out.println("Admin access validation - Role: " + roleObj + 
+                           " (" + (roleObj != null ? roleObj.getClass().getName() : "null") + ")");
         
         if (roleObj != null) {
             if (roleObj instanceof Role && roleObj == Role.ADMIN) {
+                System.out.println("Admin access validation passed: user is ADMIN (Role enum)");
                 return true;
             } else if (roleObj.toString().equals("ADMIN")) {
+                System.out.println("Admin access validation passed: user is ADMIN (String match)");
                 return true;
             }
         }
         
+        System.out.println("Admin access validation failed: user is not ADMIN");
         return false;
     }
     
@@ -176,16 +189,31 @@ public class DashboardController {
     // Uppercase admin routes for backward compatibility
     @GetMapping("/Admin/users")
     public String adminUsersUppercase(HttpSession session, Model model) {
+        System.out.println("Admin Users controller accessed (uppercase)");
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        System.out.println("Redirecting to lowercase admin users URL");
         return "redirect:/admin/users";
     }
     
     @GetMapping("/Admin/data")
     public String adminDataUppercase(HttpSession session, Model model) {
+        System.out.println("Admin Data controller accessed (uppercase)");
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        System.out.println("Redirecting to lowercase admin data URL");
         return "redirect:/admin/data";
     }
     
     @GetMapping("/Admin/crops")
     public String adminCropsUppercase(HttpSession session, Model model) {
+        System.out.println("Admin Crops controller accessed (uppercase)");
+        if (!validateAdminAccess(session)) {
+            return "redirect:/Dashboard";
+        }
+        System.out.println("Redirecting to lowercase admin crops URL");
         return "redirect:/admin/crops";
     }
 }

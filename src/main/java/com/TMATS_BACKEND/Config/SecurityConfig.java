@@ -18,9 +18,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/Contact","/Products","/Services","/About","/Home", "/Register", "/Login", 
                                 "/forgot-password", "/reset-password", "/forgot-password-submit", "/api/auth/forgot-password", "/api/auth/reset-password",
-                                "/css/**", "/js/**", "/images/**", "/static/**", 
+                                "/css/**", "/js/**", "/images/**", "/static/**", "/fonts/**", "/favicon.ico",
                                 "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard","/admin/dashboard",
-                                "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community").permitAll()
+                                "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community",
+                                "/debug-session").permitAll()
                 .requestMatchers("/Admin/**", "/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated() // Protect all other routes
             )
