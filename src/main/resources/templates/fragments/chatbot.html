@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <!-- Chatbot Fragment -->
+    <div th:fragment="chatbot">
+        <div class="chatbot-container">
+            <div class="chatbot-header">
+                <div class="chatbot-title">GrowSmart Assistant</div>
+                <button class="chatbot-toggle-btn" id="chatToggleBtn">
+                    <i class="fas fa-comments"></i>
+                </button>
+            </div>
+            <div class="chatbot-body" id="chatbotBody">
+                <div class="chatbot-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            Hello! I'm your GrowSmart Assistant. How can I help you with your farming today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-input">
+                    <input type="text" id="userMessage" placeholder="Type your message here..." autocomplete="off">
+                    <button id="sendMessage">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .chatbot-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 350px;
+                max-width: 90vw;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                transition: all 0.3s ease;
+            }
+
+            .chatbot-container.collapsed .chatbot-body {
+                display: none;
+            }
+
+            .chatbot-header {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .chatbot-title {
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+
+            .chatbot-toggle-btn {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+
+            .chatbot-body {
+                display: flex;
+                flex-direction: column;
+                height: 400px;
+                max-height: 60vh;
+            }
+
+            .chatbot-messages {
+                flex: 1;
+                padding: 15px;
+                overflow-y: auto;
+                background-color: #f5f5f5;
+            }
+
+            .message {
+                margin-bottom: 15px;
+                display: flex;
+            }
+
+            .user-message {
+                justify-content: flex-end;
+            }
+
+            .bot-message {
+                justify-content: flex-start;
+            }
+
+            .message-content {
+                max-width: 70%;
+                padding: 10px 15px;
+                border-radius: 15px;
+                word-break: break-word;
+            }
+
+            .user-message .message-content {
+                background-color: #4CAF50;
+                color: white;
+                border-bottom-right-radius: 5px;
+            }
+
+            .bot-message .message-content {
+                background-color: #e9e9eb;
+                color: #333;
+                border-bottom-left-radius: 5px;
+            }
+
+            .chatbot-input {
+                display: flex;
+                padding: 10px;
+                background-color: #fff;
+                border-top: 1px solid #e0e0e0;
+            }
+
+            .chatbot-input input {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #e0e0e0;
+                border-radius: 20px;
+                outline: none;
+                font-size: 14px;
+            }
+
+            .chatbot-input button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                margin-left: 10px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            @media (max-width: 576px) {
+                .chatbot-container {
+                    width: 90vw;
+                    bottom: 10px;
+                    right: 5%;
+                }
+
+                .chatbot-body {
+                    height: 300px;
+                }
+            }
+        </style>
+
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                const chatToggleBtn = document.getElementById('chatToggleBtn');
+                const chatbotContainer = document.querySelector('.chatbot-container');
+                const chatMessages = document.getElementById('chatMessages');
+                const userMessageInput = document.getElementById('userMessage');
+                const sendMessageBtn = document.getElementById('sendMessage');
+
+                // Initially collapsed
+                chatbotContainer.classList.add('collapsed');
+
+                // Toggle chat window
+                chatToggleBtn.addEventListener('click', function() {
+                    chatbotContainer.classList.toggle('collapsed');
+                    if (!chatbotContainer.classList.contains('collapsed')) {
+                        userMessageInput.focus();
+                    }
+                });
+
+                // Send message when button is clicked
+                sendMessageBtn.addEventListener('click', sendUserMessage);
+
+                // Send message when Enter key is pressed
+                userMessageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendUserMessage();
+                    }
+                });
+
+                function sendUserMessage() {
+                    const userMessage = userMessageInput.value.trim();
+                    if (userMessage === '') return;
+
+                    // Add user message to chat
+                    addMessage(userMessage, 'user');
+                    userMessageInput.value = '';
+
+                    // Send to server and get response
+                    fetch('/api/chatbot', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: userMessage }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Add bot response to chat
+                        addMessage(data.response, 'bot');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        addMessage('Sorry, I encountered an error. Please try again later.', 'bot');
+                    });
+                }
+
+                function addMessage(message, sender) {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message');
+                    
+                    if (sender === 'user') {
+                        messageElement.classList.add('user-message');
+                    } else {
+                        messageElement.classList.add('bot-message');
+                    }
+
+                    messageElement.innerHTML = `
+                        <div class="message-content">${message}</div>
+                    `;
+
+                    chatMessages.appendChild(messageElement);
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            });
+        </script>
+    </div>
+</body>
+</html> 
