@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TMATS - Services</title>
+    <title>GreenHarvest - Services</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <style>
@@ -35,7 +35,7 @@
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(5px);
-            background: rgba(22, 41, 56, 0.6);
+            background: rgba(37, 78, 31, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
@@ -46,7 +46,7 @@
             font-size: 2.5rem;
             margin-bottom: 15px;
             color: #fff;
-            border-bottom: 2px solid #0091ff;
+            border-bottom: 2px solid #69B578;
             padding-bottom: 10px;
         }
         
@@ -64,7 +64,7 @@
         }
         
         .services-pricing h3 {
-            color: #0091ff;
+            color: #69B578;
             margin-bottom: 10px;
             font-size: 1.2rem;
         }
@@ -102,7 +102,7 @@
         .service-card ion-icon {
             font-size: 1.8rem;
             margin-bottom: 8px;
-            color: #0091ff;
+            color: #69B578;
         }
         
         .service-card h3 {
@@ -119,7 +119,7 @@
         
         .promo-box {
             grid-column: span 2;
-            background: rgba(0, 145, 255, 0.15);
+            background: rgba(105, 181, 120, 0.25);
             border-radius: 10px;
             padding: 15px;
             text-align: center;
@@ -134,7 +134,7 @@
         
         .services-btn {
             display: inline-block;
-            background: #24699d;
+            background: #3A7D44;
             color: white;
             padding: 8px 20px;
             border-radius: 6px;
@@ -147,9 +147,9 @@
         }
         
         .services-btn:hover {
-            background: #1c5580;
+            background: #2C6135;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(36, 105, 157, 0.4);
+            box-shadow: 0 5px 15px rgba(58, 125, 68, 0.4);
         }
         
         /* Responsive styles */
@@ -267,7 +267,7 @@
                 right: -100%;
                 width: 250px;
                 height: 100vh;
-                background: rgba(22, 41, 56, 0.95);
+                background: rgba(37, 78, 31, 0.95);
                 backdrop-filter: blur(10px);
                 flex-direction: column;
                 align-items: flex-start;
@@ -313,7 +313,7 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">TMATS</h2>
+        <h2 class="logo">GreenHarvest</h2>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
@@ -333,69 +333,69 @@
         <div class="services-container">
             <div class="services-info">
                 <h1>Our Services</h1>
-                <p>At TMATS Xerox, we offer a comprehensive range of document and printing services for students, businesses, and individuals. Our state-of-the-art equipment and skilled team ensure high-quality results for all your needs.</p>
+                <p>At GreenHarvest, we offer a comprehensive range of urban farming solutions for apartments, homes, and communities. Our eco-friendly products and expert guidance help you grow fresh organic produce in any space.</p>
                 
                 <div class="services-pricing">
                     <h3>Pricing</h3>
                     <div class="price-item">
-                        <span>Black & White Copy (A4)</span>
-                        <span>₹2.00 / page</span>
+                        <span>Starter Seed Kit</span>
+                        <span>₹299.00</span>
                     </div>
                     <div class="price-item">
-                        <span>Color Copy (A4)</span>
-                        <span>₹10.00 / page</span>
+                        <span>Vertical Garden System</span>
+                        <span>₹1,999.00</span>
                     </div>
                     <div class="price-item">
-                        <span>Scanning</span>
-                        <span>₹5.00 / page</span>
+                        <span>Hydroponic Setup</span>
+                        <span>₹3,500.00</span>
                     </div>
                     <div class="price-item">
-                        <span>Spiral Binding</span>
-                        <span>₹30.00 - ₹80.00</span>
+                        <span>Monthly Maintenance</span>
+                        <span>₹800.00</span>
                     </div>
                     <div class="price-item">
-                        <span>Lamination (A4)</span>
-                        <span>₹20.00 / sheet</span>
+                        <span>Composting Bin</span>
+                        <span>₹599.00</span>
                     </div>
                 </div>
                 
-                <button class="services-btn btnlogin-popup">Order Now</button>
+                <button class="services-btn btnlogin-popup">Shop Now</button>
             </div>
             
             <div class="services-grid">
                 <div class="service-card">
-                    <ion-icon name="print-outline"></ion-icon>
-                    <h3>Document Printing</h3>
-                    <p>High-quality prints from digital files in various paper types</p>
+                    <ion-icon name="leaf-outline"></ion-icon>
+                    <h3>Organic Seeds</h3>
+                    <p>Premium quality seeds for vegetables and herbs</p>
                 </div>
                 <div class="service-card">
-                    <ion-icon name="copy-outline"></ion-icon>
-                    <h3>Xerox Copies</h3>
-                    <p>B&W and color copies with crisp quality</p>
+                    <ion-icon name="water-outline"></ion-icon>
+                    <h3>Hydroponic Systems</h3>
+                    <p>Space-efficient soil-free growing solutions</p>
                 </div>
                 <div class="service-card">
-                    <ion-icon name="scan-outline"></ion-icon>
-                    <h3>Scanning Services</h3>
-                    <p>Convert physical documents to digital format</p>
+                    <ion-icon name="bar-chart-outline"></ion-icon>
+                    <h3>Vertical Gardens</h3>
+                    <p>Maximize growing area in limited spaces</p>
                 </div>
                 <div class="service-card">
-                    <ion-icon name="book-outline"></ion-icon>
-                    <h3>Binding Services</h3>
-                    <p>Spiral and thermal binding for professional documents</p>
+                    <ion-icon name="flask-outline"></ion-icon>
+                    <h3>Composting</h3>
+                    <p>Turn kitchen waste into nutrient-rich soil</p>
                 </div>
                 <div class="service-card">
-                    <ion-icon name="layers-outline"></ion-icon>
-                    <h3>Lamination</h3>
-                    <p>Protect important documents with durable lamination</p>
+                    <ion-icon name="school-outline"></ion-icon>
+                    <h3>Workshops</h3>
+                    <p>Learn urban farming techniques from experts</p>
                 </div>
                 <div class="service-card">
-                    <ion-icon name="reader-outline"></ion-icon>
-                    <h3>Academic Materials</h3>
-                    <p>Lab manuals, records and project reports</p>
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <h3>Maintenance Plans</h3>
+                    <p>Regular care for your urban garden</p>
                 </div>
                 <div class="promo-box">
-                    <h4>Buy your records and lab manuals from us at a very reasonable price</h4>
-                    <button class="services-btn btnlogin-popup">Enquire Now</button>
+                    <h4>Start your urban farming journey today with our beginner-friendly kits. Free consultation with every purchase!</h4>
+                    <button class="services-btn btnlogin-popup">Get Started</button>
                 </div>
             </div>
         </div>

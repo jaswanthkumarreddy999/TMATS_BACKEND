@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('/images/BG3.jpg') no-repeat;
+    background: url('/images/farm-bg.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -89,7 +89,7 @@ header {
 }
 .navigation .btnlogin-popup:hover {
     background: #fff;
-    color: #162938;
+    color: #3A7D44;
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
@@ -176,7 +176,7 @@ header {
     right: 0;
     width: 45px;
     height: 45px;
-    background: #162938;
+    background: #3A7D44;
     font-size: 2em;
     color: #fff;
     display: flex;
@@ -188,7 +188,7 @@ header {
 
 .form-box h2 {
     font-size: 2em;
-    color: #0091ff;
+    color: #69B578;
     text-align: center;
     width: 100%;
     margin-bottom: 10px;
@@ -198,7 +198,7 @@ header {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid #24699d;
+    border-bottom: 2px solid #3A7D44;
     margin: 30px 0;
     text-align: left;
 }
@@ -209,7 +209,7 @@ header {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    color:#24699d;
+    color: #3A7D44;
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
@@ -236,13 +236,13 @@ header {
     position: absolute;
     right: 8px;
     font-size: 1.2em;
-    color:#24699d;
+    color: #3A7D44;
     line-height: 57px;
 }
 
 .remember-forget {
     font-size: .9em;
-    color: #24699d;
+    color: #3A7D44;
     font-weight: 500;
     margin: -15px 0px 15px;
     display: flex;
@@ -252,12 +252,12 @@ header {
 }
 
 .remember-forget label input {
-    accent-color: #24699d;
+    accent-color: #3A7D44;
     text-decoration: none;
 }
 
 .remember-forget a {
-    color: #0091ff;
+    color: #69B578;
     text-decoration: none;
 }
 
