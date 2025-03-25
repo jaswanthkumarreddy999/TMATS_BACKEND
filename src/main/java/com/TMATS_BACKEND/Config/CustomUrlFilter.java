@@ -29,6 +29,13 @@ public class CustomUrlFilter implements Filter {
         
         System.out.println("CustomUrlFilter processing path: " + path);
         
+        // Skip filtering for admin paths completely - let the controllers handle them
+        if (path.startsWith("/admin/") || path.startsWith("/Admin/")) {
+            System.out.println("Skipping filter for admin path: " + path);
+            chain.doFilter(request, response);
+            return;
+        }
+        
         // Skip processing for static resources
         if (path.startsWith("/css/") || 
             path.startsWith("/js/") || 
@@ -58,14 +65,6 @@ public class CustomUrlFilter implements Filter {
             path.equals("/Register") || 
             path.equals("/logout") || 
             path.equals("/Dashboard") || 
-            path.equals("/Admin/Dashboard") || 
-            path.equals("/admin/dashboard") ||
-            path.equals("/admin/users") ||
-            path.equals("/admin/data") ||
-            path.equals("/admin/crops") ||
-            path.equals("/Admin/users") ||
-            path.equals("/Admin/data") ||
-            path.equals("/Admin/crops") ||
             path.equals("/debug-session") ||
             path.startsWith("/test/") ||
             path.startsWith("/verify-otp") || 
@@ -99,32 +98,6 @@ public class CustomUrlFilter implements Filter {
                 System.out.println("Unknown URL accessed: " + path);
                 System.out.println("User: " + session.getAttribute("user"));
                 System.out.println("Role: " + role);
-                
-                // Disable admin URL redirection since admin pages are now public
-                /*
-                // Check if user is admin
-                if (role != null) {
-                    System.out.println("Role class: " + role.getClass().getName());
-                    
-                    if (role instanceof Role) {
-                        System.out.println("Role is Role enum instance");
-                        if (role == Role.ADMIN) {
-                            System.out.println("REDIRECTING TO ADMIN DASHBOARD from filter");
-                            httpResponse.sendRedirect("/admin/dashboard");
-                            return;
-                        }
-                    }
-                    
-                    String roleStr = role.toString();
-                    System.out.println("Role string value: " + roleStr);
-                    
-                    if (roleStr.equals("ADMIN")) {
-                        System.out.println("REDIRECTING TO ADMIN DASHBOARD from filter (string match)");
-                        httpResponse.sendRedirect("/admin/dashboard");
-                        return;
-                    }
-                }
-                */
                 
                 // Not admin, redirect to user dashboard
                 System.out.println("REDIRECTING TO USER DASHBOARD from filter");

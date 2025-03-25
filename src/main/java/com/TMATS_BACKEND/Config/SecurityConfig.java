@@ -19,12 +19,13 @@ public class SecurityConfig {
                 .requestMatchers("/Contact","/Products","/Services","/About","/Home", "/Register", "/Login", 
                                 "/forgot-password", "/reset-password", "/forgot-password-submit", "/api/auth/forgot-password", "/api/auth/reset-password",
                                 "/css/**", "/js/**", "/images/**", "/static/**", "/fonts/**", "/favicon.ico",
-                                "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard","/Admin/Dashboard","/admin/dashboard",
-                                "/Admin/users", "/admin/users", "/Admin/data", "/admin/data", "/Admin/crops", "/admin/crops",
+                                "/favicon.png","/UserNotFound","/Wrongpassword","/Dashboard",
                                 "/verify-otp", "/api/auth/verify-otp", "/api/auth/resend-otp", "/UserNotVerified", "/user-exists", "/Community",
                                 "/debug-session", "/test/**").permitAll()
-                // Comment out the admin-specific authorization to make all admin pages public
-                // .requestMatchers("/Admin/**", "/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/Admin/Dashboard", "/admin/dashboard", 
+                                 "/Admin/users", "/admin/users", 
+                                 "/Admin/data", "/admin/data", 
+                                 "/Admin/crops", "/admin/crops").permitAll()
                 .anyRequest().authenticated() // Protect all other routes
             )
             .formLogin(form -> form
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 .defaultAuthenticationEntryPointFor(
                     (request, response, exception) -> {
                         // This will handle unauthorized access attempts
+                        System.out.println("Security exception handler triggered: " + exception.getMessage());
                         if (request.getSession().getAttribute("user") != null) {
                             response.sendRedirect("/Dashboard");
                         } else {
