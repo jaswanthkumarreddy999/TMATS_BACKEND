@@ -101,13 +101,12 @@ public class DashboardController {
     @GetMapping("/user/profile")
     public String userProfile(HttpSession session, Model model) {
         System.out.println("User Profile page accessed");
-        // Check if user is logged in
-        if (session.getAttribute("user") == null) {
-            return "redirect:/Home";
+        // Add sample user information for non-authenticated access
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("email", session.getAttribute("user"));
+        } else {
+            model.addAttribute("email", "Guest User");
         }
-        
-        // Add user information to the model
-        model.addAttribute("email", session.getAttribute("user"));
         
         return "user-profile";
     }
@@ -115,13 +114,12 @@ public class DashboardController {
     @GetMapping("/user/crops")
     public String userCrops(HttpSession session, Model model) {
         System.out.println("User Crops page accessed");
-        // Check if user is logged in
-        if (session.getAttribute("user") == null) {
-            return "redirect:/Home";
+        // Add sample user information for non-authenticated access
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("email", session.getAttribute("user"));
+        } else {
+            model.addAttribute("email", "Guest User");
         }
-        
-        // Add user information to the model
-        model.addAttribute("email", session.getAttribute("user"));
         
         return "user-crops";
     }
@@ -129,13 +127,12 @@ public class DashboardController {
     @GetMapping("/user/analytics")
     public String userAnalytics(HttpSession session, Model model) {
         System.out.println("User Analytics page accessed");
-        // Check if user is logged in
-        if (session.getAttribute("user") == null) {
-            return "redirect:/Home";
+        // Add sample user information for non-authenticated access
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("email", session.getAttribute("user"));
+        } else {
+            model.addAttribute("email", "Guest User");
         }
-        
-        // Add user information to the model
-        model.addAttribute("email", session.getAttribute("user"));
         
         return "user-analytics";
     }
